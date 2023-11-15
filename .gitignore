@@ -1,0 +1,8 @@
+.classpath
+.project
+.vscode
+*.class
+aims.session.sql
+*.ipynb
+test/notebook
+.metadata/
