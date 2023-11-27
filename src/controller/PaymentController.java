@@ -43,6 +43,10 @@ public class PaymentController extends BaseController {
 	 *         format
 	 * @throws InvalidCardException - if the string does not represent a valid date
 	 *                              in the expected format
+	 *
+	 * The method getExpirationDate directly processes and validates the format of the credit card expiration date.
+	 * There is a level of coupling with the content structure of the expiration date.
+	 * This is an example of Content Coupling.
 	 */
 	private String getExpirationDate(String date) throws InvalidCardException {
 		String[] strs = date.split("/");
@@ -80,6 +84,10 @@ public class PaymentController extends BaseController {
 	 * @param securityCode   - the cvv/cvc code of the credit card
 	 * @return {@link java.util.Map Map} represent the payment result with a
 	 *         message.
+	 *
+	 * The method payOrder accepts multiple parameters, including transaction data such as the payment amount and transaction contents.
+	 * There is a level of data coupling through the direct passing of multiple pieces of data.
+	 * This is an example of Data Coupling.
 	 */
 	public Map<String, String> payOrder(int amount, String contents, String cardNumber, String cardHolderName,
 			String expirationDate, String securityCode) {
@@ -100,6 +108,9 @@ public class PaymentController extends BaseController {
 		return result;
 	}
 
+	/**
+	 * This is an example of Data Coupling.
+ 	 */
 	public void emptyCart(){
         Cart.getCart().emptyCart();
     }
