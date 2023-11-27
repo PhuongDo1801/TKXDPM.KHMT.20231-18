@@ -30,6 +30,7 @@ public class PlaceOrderController extends BaseController{
      * This method checks the avalibility of product when user click PlaceOrder button
      * @throws SQLException
      */
+    /* Control Coupling */
     public void placeOrder() throws SQLException{
         Cart.getCart().checkAvailabilityOfProduct();
     }
@@ -39,6 +40,7 @@ public class PlaceOrderController extends BaseController{
      * @return Order
      * @throws SQLException
      */
+      /* Data Coupling */
     public Order createOrder() throws SQLException{
         Order order = new Order();
         for (Object object : Cart.getCart().getListMedia()) {
@@ -56,6 +58,7 @@ public class PlaceOrderController extends BaseController{
      * @param order
      * @return Invoice
      */
+      /* Control Coupling */
     public Invoice createInvoice(Order order) {
         return new Invoice(order);
     }
@@ -66,6 +69,8 @@ public class PlaceOrderController extends BaseController{
      * @throws InterruptedException
      * @throws IOException
      */
+
+      /* Control Coupling */
     public void processDeliveryInfo(HashMap info) throws InterruptedException, IOException{
         LOGGER.info("Process Delivery Info");
         LOGGER.info(info.toString());
@@ -78,6 +83,7 @@ public class PlaceOrderController extends BaseController{
    * @throws InterruptedException
    * @throws IOException
    */
+      /* Control Coupling */
     public void validateDeliveryInfo(HashMap<String, String> info) throws InterruptedException, IOException{
     	
     }
@@ -103,6 +109,7 @@ public class PlaceOrderController extends BaseController{
      * @param order
      * @return shippingFee
      */
+      /* Data Coupling */
     public int calculateShippingFee(Order order){
         Random rand = new Random();
         int fees = (int)( ( (rand.nextFloat()*10)/100 ) * order.getAmount() );
