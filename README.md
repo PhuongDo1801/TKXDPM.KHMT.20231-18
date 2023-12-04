@@ -113,20 +113,14 @@ The recommended report structure will have a format as follows:
 
 </details>
 
-<details>
-<summary>Team Member 2</summary>
+details>
+<summary>Bui Trung Quan</summary>
 <br>
 
-- Assigned tasks:
-  - Task 1
-  - Task 2
-  - ...
+- Assigned tasks: cohesion analysis in  class ViewCartController
 
 - Implementation details:
-  - Pull Request(s): [Attach links to your pull requests here. You can attach multiple pull requests]()
-  - Specific implementation details:
-    - Describe specific in detail what you did last week
-    - You can attach images if you want
+  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/12
 
 </details>
 
