@@ -88,6 +88,18 @@ The recommended report structure will have a format as follows:
 
 </details>
 
+<br>
+<details>
+<summary>Nguyen Manh Phuong</summary>
+<br>
+
+- Assigned tasks: cohesion analysis in  class PaymentController
+
+- Implementation details:
+  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/9
+
+</details>
+
 <details>
 <summary>Team Member 2</summary>
 <br>
