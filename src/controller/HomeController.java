@@ -17,6 +17,10 @@ public class HomeController extends BaseController{
      * this method gets all Media in DB and return back to home to display
      * @return List[Media]
      * @throws SQLException
+     * Control Coupling
+     * Phân tích tính conhesion:
+     * - Funtional conhesion: hàm thực hiện chức năng lấy toàn bộ Media từ csdl
+     * - Procedural conhesion: hàm thực hiện lấy dư liệu từ database
      */
     public List getAllMedia() throws SQLException{
         return new Media().getAllMedia();

@@ -46,6 +46,7 @@ The recommended report structure will have a format as follows:
 
 - Implementation details:
   - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/3
+
   
 </details>
 
@@ -57,6 +58,7 @@ The recommended report structure will have a format as follows:
 
 - Implementation details:
   - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/1
+
 
 </details>
 
