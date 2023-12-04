@@ -45,7 +45,8 @@ The recommended report structure will have a format as follows:
 - Assigned tasks: Evaluate the coupling of methods in BaseController, HomeController & ViewCartController
 
 - Implementation details:
-  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/commit/145e02a21d0fd268125abf83686a62f28a339233
+  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/3
+
   
 </details>
 
@@ -56,7 +57,8 @@ The recommended report structure will have a format as follows:
 - Assigned tasks: Evaluate the coupling of methods in PlaceOrderController
 
 - Implementation details:
-  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/commit/89304a85f1450ee14972f47086a9b4981a506d80
+  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/1
+
 
 </details>
 
@@ -67,7 +69,7 @@ The recommended report structure will have a format as follows:
 - Assigned tasks: Evaluate the coupling of methods in PaymentController
 
 - Implementation details:
-  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/commit/6c3e14375975be476296a1df1937c044dd591037
+  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/2
 
 </details>
 
@@ -85,6 +87,17 @@ The recommended report structure will have a format as follows:
 
 - Implementation details:
   - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/7
+
+</details>
+
+<details>
+<summary>Lam Anh Quan</summary>
+<br>
+
+- Assigned tasks: cohesion analysis in PlaceOrderController
+
+- Implementation details:
+  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/11
 
 </details>
 
