@@ -84,7 +84,7 @@ The recommended report structure will have a format as follows:
 - Assigned tasks: cohesion analysis in BaseController and HomeController
 
 - Implementation details:
-  - Pull Request(s): 
+  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/7
 
 </details>
 
