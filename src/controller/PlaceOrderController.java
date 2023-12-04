@@ -31,6 +31,7 @@ public class PlaceOrderController extends BaseController{
      * @throws SQLException
      */
     /* Control Coupling */
+    /* cohesion chức năng */
     public void placeOrder() throws SQLException{
         Cart.getCart().checkAvailabilityOfProduct();
     }
@@ -41,6 +42,7 @@ public class PlaceOrderController extends BaseController{
      * @throws SQLException
      */
       /* Data Coupling */
+     /* cohesion chức năng */
     public Order createOrder() throws SQLException{
         Order order = new Order();
         for (Object object : Cart.getCart().getListMedia()) {
@@ -59,6 +61,7 @@ public class PlaceOrderController extends BaseController{
      * @return Invoice
      */
       /* Control Coupling */
+    /* cohesion tuần tự */
     public Invoice createInvoice(Order order) {
         return new Invoice(order);
     }
@@ -71,6 +74,7 @@ public class PlaceOrderController extends BaseController{
      */
 
       /* Control Coupling */
+    /* cohesion truyền thông */
     public void processDeliveryInfo(HashMap info) throws InterruptedException, IOException{
         LOGGER.info("Process Delivery Info");
         LOGGER.info(info.toString());
@@ -84,20 +88,24 @@ public class PlaceOrderController extends BaseController{
    * @throws IOException
    */
       /* Control Coupling */
+       /* cohesion truyền thông */
     public void validateDeliveryInfo(HashMap<String, String> info) throws InterruptedException, IOException{
     	
     }
-    
+       /* Control Coupling */
+       /* cohesion truyền thông */
     public boolean validatePhoneNumber(String phoneNumber) {
     	// TODO: your work
     	return false;
     }
-    
+       /* Control Coupling */
+       /* cohesion truyền thông */
     public boolean validateName(String name) {
     	// TODO: your work
     	return false;
     }
-    
+       /* Control Coupling */
+       /* cohesion truyền thông */
     public boolean validateAddress(String address) {
     	// TODO: your work
     	return false;
@@ -110,6 +118,7 @@ public class PlaceOrderController extends BaseController{
      * @return shippingFee
      */
       /* Data Coupling */
+    /* cohesion thủ tục */
     public int calculateShippingFee(Order order){
         Random rand = new Random();
         int fees = (int)( ( (rand.nextFloat()*10)/100 ) * order.getAmount() );
