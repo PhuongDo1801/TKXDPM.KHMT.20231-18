@@ -59,6 +59,8 @@ The recommended report structure will have a format as follows:
   - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/commit/89304a85f1450ee14972f47086a9b4981a506d80
 
 </details>
+
+<details>
 <summary>Nguyen Manh Phuong</summary>
 <br>
 
@@ -67,24 +69,22 @@ The recommended report structure will have a format as follows:
 - Implementation details:
   - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/commit/6c3e14375975be476296a1df1937c044dd591037
 
+</details>
+
+</details>
+
 <details>
 
-  <summary>W2: 01/10/2023~08/10/2023 </summary>
+  <summary>W2: 04/12/2023~10/12/2023 </summary>
 <br>
 <details>
-<summary>Team Member 1</summary>
+<summary>Do Dang Phuong</summary>
 <br>
 
-- Assigned tasks:
-  - Task 1
-  - Task 2
-  - ...
+- Assigned tasks: cohesion analysis in BaseController and HomeController
 
 - Implementation details:
-  - Pull Request(s): [Attach links to your pull requests here. You can attach multiple pull requests]()
-  - Specific implementation details:
-    - Describe specific in detail what you did last week
-    - You can attach images if you want
+  - Pull Request(s): 
 
 </details>
 
