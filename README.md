@@ -1,42 +1,145 @@
-### Bai tap nhom TKXDPM nhom 18 20231
-#  An Internet Media Store
-<p align="center">
-  <img src="assets/images/aims_cover_image.png" />
-</p>
+# TKXDPM.VN.20231-01
+Template for managing Capstone's project in the Software Design and Construction course in the 2023.1 semester.
 
-## Getting Started
+## Table of contents
 
-Welcome to the AIMS project. Here is a guideline to help you get started.
+- [TKXDPM.VN.20231-01](#tkxdpmvn20231-01)
+  - [Table of contents](#table-of-contents)
+  - [Quick start](#quick-start)
+  - [What's included](#whats-included)
+  - [Report Content](#report-content)
+  - [Pull request template](#pull-request-template)
 
-## Folder Structure
+## Quick start
 
-The workspace contains the following folders, where:
+Before using this Github repository, everyone needs to register their group information using the table below:
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-- `assets`: the folder to maintain static resources
-- `test`: the folder for testing purpose
+| Name                 | Role        |
+| :------------------- | :---------- |
+| Do Dang Phuong       | Team Leader |
+| Nguyen Manh Phuong   | Member      |
+| Bui Trung Quan       | Member      |
+| Lam Anh Quan         | Member      |
+## What's included
 
-## Dependency Management
-### Working with Eclipse
-Import the root directory of this repository after cloning under `Eclipse` -> `Open Projects from File System...` or by using EGit.
+The recommended structure is as follows:
 
-### SQLite
-Import `sqlite-jdbc-3.7.2.jar` in `lib` under `Eclipse` -> `Project` -> `Properties` -> `Java Build Path` -> `Classpath` -> `Add JARs...`.
+- `AIMS`: folder containing the team's AIMS base code
+- `assets`: folder containing images that you want to include in the report file
+- `README.md`: weekly report file, individuals are required to update their tasks and how their do it into this file
+- `Template.md`: template for the weekly report
+- `pull_request_template.md`: pull request's description template
+- `how_to_run_AMIS.md`: tutorials to run AMIS
+
+## Report Content
+
+The recommended report structure will have a format as follows:
+
+<details>
+  <summary>W1: 27/11/2023~3/12/2023</summary>
+<br>
+<details>
+<summary>Do Dang Phuong</summary>
+<br>
+
+- Assigned tasks: Evaluate the coupling of methods in BaseController, HomeController & ViewCartController
+
+- Implementation details:
+  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/3
+
+  
+</details>
+
+<details>
+<summary>Lam Anh Quan</summary>
+<br>
+
+- Assigned tasks: Evaluate the coupling of methods in PlaceOrderController
+
+- Implementation details:
+  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/1
 
 
-### JUnit
-Import `JUnit5` library under `Eclipse` -> `Project` -> `Properties` -> `Java Build Path` -> `Modulepath` -> `Add Library...` -> `JUnit` -> `Next`.
+</details>
 
-### JavaFX
-**Note:** At first, please try to run the project once, and then follow these steps.
-1. Create a new `User Library` under `Eclipse` -> `Window` -> `Preferences` -> `Java` -> `Build Path` -> `User Libraries` -> `New`
-2. Name it anything you want, e.g., `JavaFX15`, and include the ***jars*** under either the `lib/linux/javafx-sdk-15` directory for Linux distro or the `lib/win/javafx-sdk-15` directory for Windows in the project.
-3. Include the library, e.g., `JavaFX15`, into the ModulePath.
+<details>
+<summary>Nguyen Manh Phuong</summary>
+<br>
 
-### Add VM arguments
-Click on `Run` -> `Run Configurations...`  -> `Java Application`, create a new launch configuration for your project and add these VM arguments:
-- For Linux distro: 
-> `--module-path lib/linux/javafx-sdk-15 --add-modules javafx.controls,javafx.fxml`
-- For Windows:
-> `--module-path lib/win/javafx-sdk-15 --add-modules javafx.controls,javafx.fxml`
+- Assigned tasks: Evaluate the coupling of methods in PaymentController
+
+- Implementation details:
+  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/2
+
+</details>
+
+</details>
+
+<details>
+
+  <summary>W2: 04/12/2023~10/12/2023 </summary>
+<br>
+<details>
+<summary>Do Dang Phuong</summary>
+<br>
+
+- Assigned tasks: cohesion analysis in BaseController and HomeController
+
+- Implementation details:
+  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/7
+
+</details>
+
+<details>
+<summary>Lam Anh Quan</summary>
+<br>
+
+- Assigned tasks: cohesion analysis in PlaceOrderController
+
+- Implementation details:
+  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/11
+
+</details>
+
+<br>
+<details>
+<summary>Nguyen Manh Phuong</summary>
+<br>
+
+- Assigned tasks: cohesion analysis in  class PaymentController
+
+- Implementation details:
+  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/9
+
+</details>
+
+details>
+<summary>Bui Trung Quan</summary>
+<br>
+
+- Assigned tasks: cohesion analysis in  class ViewCartController
+
+- Implementation details:
+  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/12
+
+</details>
+
+</details>
+
+---
+
+## Pull request template
+
+- You are required to create a pull request according to these steps:
+  - Use the `pull_request_template.md` file when writing the description section in the pull request
+  - The `title` of the pull request should follow the format below:
+    - `Feature/Topic/Hotfix/Fix: Task Name`. Example: `Feature: Build View Controller`
+    - Explain:
+      - `Feature`: When the branch has the task of changing the main code of the project
+      - `Topic`: When the branch only has the task of research, without directly changing the main code of the project
+      - `Hotfix`: When you discover code on the production environment
+      - `Fix`: When you discover a bug in a branch that has not been merged into the production environment
+  - After creating the pull request, decide who will merge the code within your team.
+  - You don't need to follow the Wxx format as I mentioned before
+  - Each person will have multiple pull requests
+  - Whoever makes the pull request, attach that pull request to the report you attached above. Section `pull request(s)`
