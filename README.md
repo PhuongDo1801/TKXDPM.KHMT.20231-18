@@ -113,7 +113,7 @@ The recommended report structure will have a format as follows:
 
 </details>
 
-details>
+<details>
 <summary>Bui Trung Quan</summary>
 <br>
 
