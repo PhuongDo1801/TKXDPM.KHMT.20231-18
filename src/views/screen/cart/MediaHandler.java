@@ -24,6 +24,11 @@ import utils.Configs;
 import utils.Utils;
 import views.screen.FXMLScreenHandler;
 
+/**
+ * lớp này thỏa mãn Single Resposibility Principle - SRP vì các phương thức bên trong đều có chung mục đích về xử lý handle Media
+ * thỏa mãn Liskov Substitution Principle - LSP vì MediaHandler nó có thể thay thế được cho FXMLScreenHandler
+ */
+
 public class MediaHandler extends FXMLScreenHandler {
 
 	private static Logger LOGGER = Utils.getLogger(MediaHandler.class.getName());
