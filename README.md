@@ -133,6 +133,7 @@ details>
 <summary>Nguyen Manh Phuong</summary>
 <br>
 - Assigned tasks: Evaluate the solid in PaymentController, entity/cart, views/screen/cart, views/screen/home
+  
 - Implementation details:
   - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/14
 </details>
