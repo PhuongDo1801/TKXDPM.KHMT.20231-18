@@ -7,6 +7,11 @@ import java.util.List;
 import common.exception.MediaNotAvailableException;
 import entity.media.Media;
 
+/**
+ * Thỏa mãn Single Responsibility Principle - SRP nó có mục đích chung về Cart.
+ */
+
+
 public class Cart {
     
     private List<CartMedia> lstCartMedia;

@@ -34,6 +34,10 @@ import utils.Utils;
 import views.screen.BaseScreenHandler;
 import views.screen.cart.CartScreenHandler;
 
+/**
+ * lớp này không thỏa mãn Single Resposibility Principle - SRP vì có các phương thức thực hiện mục đích khác nhau
+ * thỏa mãn Liskov Substitution Principle - LSP vì HomeScreenHandler nó có thể thay thế được cho BaseScreenHandler
+ */
 
 public class HomeScreenHandler extends BaseScreenHandler implements Initializable{
 

@@ -26,6 +26,11 @@ import views.screen.BaseScreenHandler;
 import views.screen.popup.PopupScreen;
 import views.screen.shipping.ShippingScreenHandler;
 
+/**
+ * lớp này thỏa mãn Single Resposibility Principle - SRP vì các phương thức bên trong đều có chung mục đích về Cart
+ * thỏa mãn Liskov Substitution Principle - LSP vì CartScreenHandler nó có thể thay thế được cho BaseScreenHandler
+ */
+
 public class CartScreenHandler extends BaseScreenHandler {
 
 	private static Logger LOGGER = Utils.getLogger(CartScreenHandler.class.getName());

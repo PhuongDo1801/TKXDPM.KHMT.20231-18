@@ -21,6 +21,11 @@ import views.screen.FXMLScreenHandler;
 import views.screen.home.HomeScreenHandler;
 import views.screen.popup.PopupScreen;
 
+/**
+ * lớp này thỏa mãn Single Resposibility Principle - SRP vì các phương thức bên trong đều có chung mục đích
+ * thỏa mãn Liskov Substitution Principle - LSP vì MediaHandler nó có thể thay thế được cho FXMLScreenHandler
+ */
+
 public class MediaHandler extends FXMLScreenHandler{
 
     @FXML
