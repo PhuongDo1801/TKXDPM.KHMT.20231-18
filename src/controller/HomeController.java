@@ -8,7 +8,10 @@ import entity.media.Media;
 
 /**
  * This class controls the flow of events in homescreen
- * @author nguyenlm
+ * @author phuongdo
+ * 
+ * Thảo mãn SRP vì có 1 hàm duy nhất là getAllMedia()
+ * Thoả mãn LSP
  */
 public class HomeController extends BaseController{
 

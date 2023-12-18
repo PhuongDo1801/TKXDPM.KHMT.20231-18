@@ -10,6 +10,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import views.screen.home.HomeScreenHandler;
 
+/*
+ * Thảo mã SRP vì nó chủ yếu làm công việc quản lý hiển thị màn hình và chuyển tiếp thông điệp giữa các màn hình. 
+ * @author: phuongdo
+ */
+
 public class BaseScreenHandler extends FXMLScreenHandler {
 
 	private Scene scene;

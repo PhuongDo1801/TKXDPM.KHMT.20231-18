@@ -20,6 +20,15 @@ import subsystem.InterbankSubsystem;
  *
  * @author manhphuong
  *
+ * Không thỏa mãn Single Responsibility Principle - SRP bởi vì trong lớp có 3 hàm là getExpirationDate, payOrder, emptyCart nó thực hiện
+ * mục đích khác nhau nhưng được nằm chung 1 file
+ * Giải pháp cho vấn đề này: nên để getExpirationDate ở class CartController vì getExpirationDate thực hiện mục đích lấy ngày hết hạn của Cart, getExpirationDate thì vẫn để
+ * ở class PaymentController, emptyCart để ở class CartController vì emptyCart thực hiện mục đích lấy làm trống Cart
+ * Thỏa mãn Liskov Substitution Principle - LSP vì PaymentController vì PaymentController có thể thay thế được cho class BaseController
+ *
+ *
+ *
+ *
  */
 public class PaymentController extends BaseController {
 

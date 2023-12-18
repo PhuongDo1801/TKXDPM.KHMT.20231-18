@@ -2,6 +2,11 @@ package entity.cart;
 
 import entity.media.Media;
 
+/**
+ * Thỏa mãn Single Responsibility Principle - SRP vì nó chỉ có trách nhiệm duy nhất là quản lý thông tin về một mặt hàng trong giỏ hàng.
+ * Thỏa mãn Open/Closed Principle - OCP vì nó có thể mở rộng (thông qua kế thừa hoặc thực thi giao diện) mà không cần sửa đổi mã nguồn.
+ */
+
 public class CartMedia {
     
     private Media media;
