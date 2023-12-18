@@ -30,6 +30,13 @@ public class PlaceOrderController extends BaseController{
      * This method checks the avalibility of product when user click PlaceOrder button
      * @throws SQLException
      */
+    /** 
+     * Không thỏa mãn Single Responsibility Principle - SRP bởi vì trong đoạn mã, hàm placeOrder thực hiện nhiều công việc, bao gồm kiểm tra sự khả dụng của sản phẩm, tạo đơn đặt hàng, tạo hóa đơn và thực hiện các bước khác trong quá trình đặt hàng. Điều này có thể làm tăng độ phức tạp của phương thức và làm cho nó khó hiểu và khó bảo trì.
+     * Giải pháp: tách các công việc này thành các phương thức riêng biệt ví dụ:
+     * createOrder thực hiện công việc tạo đơn đặt hàng
+     * createInvoice thực hiện công việc tạo hóa đơn.
+     * processOrder thực hiện các bước trong quá trình đặt hàng.
+     */
     /* Control Coupling */
     /* cohesion chức năng */
     public void placeOrder() throws SQLException{
