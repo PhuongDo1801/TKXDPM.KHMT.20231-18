@@ -151,7 +151,7 @@ The recommended report structure will have a format as follows:
 - Assigned tasks: Evaluate the solid in PlaceOrderController
   
 - Implementation details: 
-  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/17
+  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/19
 </details>
 </details>
 
