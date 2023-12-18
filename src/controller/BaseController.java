@@ -8,8 +8,14 @@ import entity.media.Media;
 
 /**
  * This class is the base controller for our AIMS project
- * @author nguyenlm
+ * @author phuongdo
+ * 
+ * 
+ * Không thỏa mãn Single Responsibility Principle - SRP vì trong BaseController có 2 hàm với 2 mục địch khác nhau
+ * 
  */
+
+ 
 public class BaseController {
     
     /**

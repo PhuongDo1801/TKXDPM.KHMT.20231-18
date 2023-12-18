@@ -14,6 +14,12 @@ import javafx.util.Duration;
 import utils.Configs;
 import views.screen.BaseScreenHandler;
 
+/*
+ * 
+ * Thoả mãn SRP vì nhiệm vụ chính của nó liên quan đến việc quản lý popup
+ * Thoả mãn LSP vì có thê thay thế được BaseSceenHandler
+ * @author: phuongdo
+ */
 
 public class PopupScreen extends BaseScreenHandler{
     
