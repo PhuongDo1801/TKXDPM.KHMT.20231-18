@@ -23,6 +23,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitMenuButton;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -67,6 +69,12 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
     @FXML
     private SplitMenuButton splitMenuBtnSearch;
 
+    @FXML
+    private Button btnSearch;
+
+    @FXML
+    private TextField textSearch;
+
     private List homeItems;
 
     public HomeScreenHandler(Stage stage, String screenPath) throws IOException{
@@ -103,6 +111,12 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
             e.printStackTrace();
         }
         
+        // Xử lý sự kiện nhấn Enter trong ô tìm kiếm
+        textSearch.setOnKeyPressed(event -> {
+            if (event.getCode() == javafx.scene.input.KeyCode.ENTER) {
+                handleSearchEvent();
+            }
+        });
             
         aimsImage.setOnMouseClicked(e -> {
             addMediaHome(this.homeItems);
@@ -186,6 +200,22 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
         menuButton.getItems().add(position, menuItem);
     }
 
+    private void handleSearchEvent() {
+        String keyword = textSearch.getText();
+        performSearch(keyword);
+    }
+    
+    private void performSearch(String keyword) {
+        List filteredItems = new ArrayList<>();
+        homeItems.forEach(item -> {
+            MediaHandler media = (MediaHandler) item;
+            if (media.getMedia().getTitle().toLowerCase().contains(keyword.toLowerCase())) {
+                filteredItems.add(media);
+            }
+        });
+        addMediaHome(filteredItems);
+    }
+    
     
     
 }
