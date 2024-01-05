@@ -146,7 +146,7 @@ The recommended report structure will have a format as follows:
   - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/15
 </details>
 <details>
-<summaryLam Anh Quan</summary>
+<summary>Lam Anh Quan</summary>
 <br>
 - Assigned tasks: Evaluate the solid in PlaceOrderController
   
@@ -154,7 +154,17 @@ The recommended report structure will have a format as follows:
   - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/19
 </details>
 </details>
-
+<details>
+  <summary>W5: 01/01/2024~07/01/2024</summary>
+<br>
+<details>
+<summary>Do Dang Phuong</summary>
+<br>
+- Assigned tasks: Feature Search in HomeSreen
+- Implementation details: 
+  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/21
+</details>
+</details>
 ---
 
 ## Pull request template
