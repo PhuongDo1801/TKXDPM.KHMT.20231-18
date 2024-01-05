@@ -8,6 +8,7 @@ Template for managing Capstone's project in the Software Design and Construction
   - [Quick start](#quick-start)
   - [What's included](#whats-included)
   - [Report Content](#report-content)
+  - [](#)
   - [Pull request template](#pull-request-template)
 
 ## Quick start
@@ -154,14 +155,14 @@ The recommended report structure will have a format as follows:
   - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/19
 </details>
 </details>
-
 <details>
-  <summary>W3: 01/01/2024~07/01/2024</summary>
+  <summary>W5: 01/01/2024~07/01/2024</summary>
 <br>
 <details>
 <summary>Do Dang Phuong</summary>
 <br>
 - Assigned tasks: Feature Search in HomeSreen
+  
 - Implementation details: 
   - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/21
 </details>
