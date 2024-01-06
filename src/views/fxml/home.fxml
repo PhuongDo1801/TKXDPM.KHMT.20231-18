@@ -38,7 +38,7 @@
                <children>
                   <Pane prefHeight="102.0" prefWidth="562.0">
                      <children>
-                        <TextField layoutX="17.0" layoutY="27.0" prefHeight="48.0" prefWidth="528.0">
+                        <TextField fx:id="textSearch" layoutX="17.0" layoutY="27.0" prefHeight="48.0" prefWidth="528.0">
                            <font>
                               <Font size="18.0" />
                            </font></TextField>
@@ -46,7 +46,7 @@
                   </Pane>
                   <Pane prefHeight="102.0" prefWidth="158.0">
                      <children>
-                        <SplitMenuButton fx:id="splitMenuBtnSearch" layoutY="27.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="124.0" text="Search">
+                        <SplitMenuButton fx:id="splitMenuBtnSearch" layoutY="27.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="124.0" text="Option">
                           <items>
                           </items>
                            <font>
@@ -55,9 +55,18 @@
                         </SplitMenuButton>
                      </children>
                   </Pane>
+                  <Pane prefHeight="102.0" prefWidth="158.0">
+                     <children>
+                        <Button fx:id="btnSearch" layoutX="43.0" layoutY="27.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="77.0" text="Search">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </Pane>
                   <Pane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="manageProductBtn" layoutX="29.0" layoutY="27.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="115.0" text="Manage Product" />
+                        <Button fx:id="manageProductBtn" layoutX="31.0" layoutY="27.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="109.0" text="Manage Product" />
                      </children>
                   </Pane>
                </children>

@@ -69,6 +69,12 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
     @FXML
     private Button manageProductBtn;
 
+    @FXML
+    private Button btnSearch;
+
+    @FXML
+    private TextField textSearch;
+
     private List homeItems;
 
     public HomeScreenHandler(Stage stage, String screenPath) throws IOException{
@@ -105,6 +111,16 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
             e.printStackTrace();
         }
         
+        // Xử lý sự kiện nhấn Enter trong ô tìm kiếm
+        textSearch.setOnKeyPressed(event -> {
+            if (event.getCode() == javafx.scene.input.KeyCode.ENTER) {
+                handleSearchEvent();
+            }
+        });
+
+        btnSearch.setOnMouseClicked(e -> {
+            handleSearchEvent();
+        });
             
         aimsImage.setOnMouseClicked(e -> {
             addMediaHome(this.homeItems);
@@ -202,6 +218,22 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
         menuButton.getItems().add(position, menuItem);
     }
 
+    private void handleSearchEvent() {
+        String keyword = textSearch.getText();
+        performSearch(keyword);
+    }
+    
+    private void performSearch(String keyword) {
+        List filteredItems = new ArrayList<>();
+        homeItems.forEach(item -> {
+            MediaHandler media = (MediaHandler) item;
+            if (media.getMedia().getTitle().toLowerCase().contains(keyword.toLowerCase())) {
+                filteredItems.add(media);
+            }
+        });
+        addMediaHome(filteredItems);
+    }
+    
     
     
 }
