@@ -1,7 +1,11 @@
 package entity.media;
 
+import entity.db.AIMSDB;
+
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 import java.util.List;
 
@@ -19,9 +23,9 @@ public class DVD extends Media {
 
     }
 
-    public DVD(int id, String title, String category, int price, int quantity, String type, String discType,
+    public DVD(int id, String title, String category, int price, int quantity, String type, int value,String discType,
             String director, int runtime, String studio, String subtitles, Date releasedDate, String filmType) throws SQLException{
-        super(id, title, category, price, quantity, type);
+        super(id, title, category, price, quantity, type, value);
         this.discType = discType;
         this.director = director;
         this.runtime = runtime;
@@ -117,6 +121,7 @@ public class DVD extends Media {
         int price = res.getInt("price");
         String category = res.getString("category");
         int quantity = res.getInt("quantity");
+        int value = res.getInt("value");
 
         // from DVD table
         String discType = res.getString("discType");
@@ -127,7 +132,7 @@ public class DVD extends Media {
         Date releasedDate = res.getDate("releasedDate");
         String filmType = res.getString("filmType");
 
-        return new DVD(id, title, category, price, quantity, type, discType, director, runtime, studio, subtitles, releasedDate, filmType);
+        return new DVD(id, title, category, price, quantity, type, value,discType, director, runtime, studio, subtitles, releasedDate, filmType);
 
         } else {
             throw new SQLException();
@@ -137,5 +142,74 @@ public class DVD extends Media {
     @Override
     public List getAllMedia() {
         return null;
+    }
+
+    public boolean createDVD(DVD dvd, int idMedia) throws SQLException {
+        String sql = "INSERT INTO DVD (discType, director, runtime, releasedDate,studio, subtitle, filmType, id) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        try (PreparedStatement preparedStatement = AIMSDB.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            java.sql.Date sqlReleasedDate = new java.sql.Date(dvd.getReleasedDate().getTime());
+            preparedStatement.setString(1, dvd.getDiscType());
+            preparedStatement.setString(2, dvd.getDirector());
+            preparedStatement.setInt(3, dvd.getRuntime());
+            preparedStatement.setDate(4, sqlReleasedDate);
+            preparedStatement.setString(5, dvd.getStudio());
+            preparedStatement.setString(6, dvd.getSubtitles());
+            preparedStatement.setString(7, dvd.getFilmType());
+            preparedStatement.setInt(8, idMedia);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int generatedId = generatedKeys.getInt(1);
+//                    book.set(generatedId);
+//                    return true;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public DVD getDVDById(int idMedia) throws SQLException {
+        String sql = "SELECT * FROM DVD WHERE id = ?;";
+        try (PreparedStatement preparedStatement = AIMSDB.getConnection().prepareStatement(sql)) {
+            preparedStatement.setInt(1, idMedia);
+            ResultSet res = preparedStatement.executeQuery();
+
+            if(res.next()) {
+                return new DVD()
+                        .setDiscType(res.getString("discType"))
+                        .setDirector(res.getString("director"))
+                        .setRuntime(res.getInt("runtime"))
+                        .setReleasedDate(res.getDate("releasedDate"))
+                        .setStudio(res.getString("studio"))
+                        .setSubtitles(res.getString("subtitle"))
+                        .setFilmType(res.getString("filmType"));
+            }
+        }
+
+        return null;
+    }
+
+    public boolean updateDVDById(int idMedia, DVD dvd) throws SQLException {
+        String updateSql = "UPDATE DVD SET discType = ?, director = ?, runtime = ?, releasedDate = ?, studio = ?, subtitle = ?, filmType = ? WHERE id = ?;";
+        try (PreparedStatement updateStatement = AIMSDB.getConnection().prepareStatement(updateSql)) {
+            updateStatement.setString(1, dvd.getDiscType());
+            updateStatement.setString(2, dvd.getDirector());
+            updateStatement.setInt(3, dvd.getRuntime());
+            java.util.Date utilDate = dvd.getReleasedDate();
+            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+            updateStatement.setDate(4, sqlDate);
+            updateStatement.setString(5, dvd.getStudio());
+            updateStatement.setString(6, dvd.getSubtitles());
+            updateStatement.setString(7, dvd.getFilmType());
+            updateStatement.setInt(8, idMedia);
+
+            int rowsAffected = updateStatement.executeUpdate();
+            return rowsAffected > 0;
+        }
+
     }
 }

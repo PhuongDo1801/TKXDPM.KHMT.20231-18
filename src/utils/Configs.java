@@ -50,6 +50,11 @@ public class Configs {
 	public static final String HOME_PATH  = "/views/fxml/home.fxml";
 	public static final String HOME_MEDIA_PATH = "/views/fxml/media_home.fxml";
 	public static final String POPUP_PATH = "/views/fxml/popup.fxml";
+	public static final String CARD_PRODUCT_PATH = "/views/fxml/card_product.fxml";
+	public static final String MANAGE_PRODUCT_PATH = "/views/fxml/manage_product.fxml";
+	public static final String CREATE_PRODUCT_PATH = "/views/fxml/create_product.fxml";
+	public static final String UPDATE_PRODUCT_PATH = "/views/fxml/update_product.fxml";
+	public static final String DETAIL_PRODUCT_PATH = "/views/fxml/detail_product.fxml";
 
 	public static Font REGULAR_FONT = Font.font("Segoe UI", FontWeight.NORMAL, FontPosture.REGULAR, 24);
 

@@ -14,15 +14,13 @@ import java.util.logging.Logger;
 import common.exception.ViewCartException;
 import controller.BaseController;
 import controller.HomeController;
+import controller.ProductController;
 import controller.ViewCartController;
 import entity.cart.Cart;
 import entity.media.Media;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SplitMenuButton;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -33,6 +31,7 @@ import utils.Configs;
 import utils.Utils;
 import views.screen.BaseScreenHandler;
 import views.screen.cart.CartScreenHandler;
+import views.screen.product.ManageProductScreenHandler;
 
 /**
  * lớp này không thỏa mãn Single Resposibility Principle - SRP vì có các phương thức thực hiện mục đích khác nhau
@@ -66,6 +65,9 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
 
     @FXML
     private SplitMenuButton splitMenuBtnSearch;
+
+    @FXML
+    private Button manageProductBtn;
 
     private List homeItems;
 
@@ -116,6 +118,20 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
                 cartScreen.setHomeScreenHandler(this);
                 cartScreen.setBController(new ViewCartController());
                 cartScreen.requestToViewCart(this);
+            } catch (IOException | SQLException e1) {
+                throw new ViewCartException(Arrays.toString(e1.getStackTrace()).replaceAll(", ", "\n"));
+            }
+        });
+
+        manageProductBtn.setOnMouseClicked(e -> {
+            ManageProductScreenHandler manageProductScreenHandler;
+            try {
+                LOGGER.info("User clicked to view cart");
+                manageProductScreenHandler = new ManageProductScreenHandler(this.stage, Configs.MANAGE_PRODUCT_PATH);
+                manageProductScreenHandler.setHomeScreenHandler(this);
+                manageProductScreenHandler.setPreviousScreen(this);
+                manageProductScreenHandler.setBController(new ProductController());
+                manageProductScreenHandler.requestToViewManageProduct(this);
             } catch (IOException | SQLException e1) {
                 throw new ViewCartException(Arrays.toString(e1.getStackTrace()).replaceAll(", ", "\n"));
             }
@@ -175,7 +191,7 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
             List filteredItems = new ArrayList<>();
             homeItems.forEach(me -> {
                 MediaHandler media = (MediaHandler) me;
-                if (media.getMedia().getTitle().toLowerCase().startsWith(text.toLowerCase())){
+                if (media.getMedia().getType().toLowerCase().startsWith(text.toLowerCase())){
                     filteredItems.add(media);
                 }
             });
