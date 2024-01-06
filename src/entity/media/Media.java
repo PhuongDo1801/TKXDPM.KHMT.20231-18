@@ -1,8 +1,6 @@
 package entity.media;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -32,21 +30,26 @@ public class Media {
         stm = AIMSDB.getConnection().createStatement();
     }
 
-    public Media (int id, String title, String category, int price, int quantity, String type) throws SQLException{
+    public Media (int id, String title, String category, int price, int quantity, String type, int value) throws SQLException{
         this.id = id;
         this.title = title;
         this.category = category;
         this.price = price;
         this.quantity = quantity;
         this.type = type;
+        this.value = value;
 
         //stm = AIMSDB.getConnection().createStatement();
     }
 
+//    public int getQuantity() throws SQLException{
+//        int updated_quantity = getMediaById(id).quantity;
+//        this.quantity = updated_quantity;
+//        return updated_quantity;
+//    }
+
     public int getQuantity() throws SQLException{
-        int updated_quantity = getMediaById(id).quantity;
-        this.quantity = updated_quantity;
-        return updated_quantity;
+        return this.quantity;
     }
 
     public Media getMediaById(int id) throws SQLException{
@@ -79,7 +82,8 @@ public class Media {
                 .setCategory(res.getString("category"))
                 .setMediaURL(res.getString("imageUrl"))
                 .setPrice(res.getInt("price"))
-                .setType(res.getString("type"));
+                .setType(res.getString("type"))
+                 .setValue(res.getInt("value"));
             medium.add(media);
         }
         return medium;
@@ -93,6 +97,115 @@ public class Media {
         stm.executeUpdate(" update " + tbname + " set" + " " 
                           + field + "=" + value + " " 
                           + "where id=" + id + ";");
+    }
+
+    public int createMedia(Media media) throws SQLException {
+        String sql = "INSERT INTO Media (title, quantity, category, imageUrl, price, type, value) VALUES (?, ?, ?, ?, ?, ?, ?);";
+        try (PreparedStatement preparedStatement = AIMSDB.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, media.getTitle());
+            preparedStatement.setInt(2, media.getQuantity());
+            preparedStatement.setString(3, media.getCategory());
+            preparedStatement.setString(4, media.getImageURL());
+            preparedStatement.setInt(5, media.getPrice());
+            preparedStatement.setString(6, media.getType());
+            preparedStatement.setInt(7, media.getValue());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int generatedId = generatedKeys.getInt(1);
+                    media.setId(generatedId);
+                    return generatedId;
+                }
+            }
+        }
+        return -1;
+    }
+
+//    public boolean deleteMediaById(int id) throws SQLException {
+//        String sql = "DELETE FROM Media WHERE id = ?;";
+//        try (PreparedStatement preparedStatement = AIMSDB.getConnection().prepareStatement(sql)) {
+//            preparedStatement.setInt(1, id);
+//            int rowsAffected = preparedStatement.executeUpdate();
+//
+//            if (rowsAffected > 0) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+
+
+    public boolean deleteMediaById(int id) throws SQLException {
+        String sql = "DELETE FROM Media WHERE id = ?;";
+        Connection connectionDelete = null;
+        try {
+            connectionDelete = AIMSDB.getConnection();
+            if (connectionDelete == null) {
+                // Handle the case where the connection could not be established
+                throw new SQLException("Could not establish a connection to the database.");
+            }
+
+            PreparedStatement preparedStatement = connectionDelete.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (connectionDelete != null) {
+                try {
+                    connectionDelete.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+    public boolean deleteMediaByIds(List<Integer> ids) {
+        String sql = "DELETE FROM Media WHERE id IN (?);";
+
+        try (Connection connection = AIMSDB.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            String idList = String.join(",", ids.stream().map(String::valueOf).toArray(String[]::new));
+
+            preparedStatement.setString(1, idList);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public boolean updateMediaById(int id, Media updatedMedia) throws SQLException {
+        String sql = "UPDATE Media SET title=?, quantity=?, category=?, imageUrl=?, price=?, type=?, value=? WHERE id=?;";
+        try (PreparedStatement preparedStatement = AIMSDB.getConnection().prepareStatement(sql)) {
+            preparedStatement.setString(1, updatedMedia.getTitle());
+            preparedStatement.setInt(2, updatedMedia.getQuantity());
+            preparedStatement.setString(3, updatedMedia.getCategory());
+            preparedStatement.setString(4, updatedMedia.getImageURL());
+            preparedStatement.setInt(5, updatedMedia.getPrice());
+            preparedStatement.setString(6, updatedMedia.getType());
+            preparedStatement.setInt(7, updatedMedia.getValue());
+            preparedStatement.setInt(8, id);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            return rowsAffected > 0;
+        }
     }
 
     // getter and setter 
@@ -155,17 +268,32 @@ public class Media {
         return this;
     }
 
+    public int getValue() {
+        return value;
+    }
+
+    public Media setValue(int value) {
+        this.value = value;
+        return this;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
     @Override
     public String toString() {
-        return "{" +
-            " id='" + id + "'" +
-            ", title='" + title + "'" +
-            ", category='" + category + "'" +
-            ", price='" + price + "'" +
-            ", quantity='" + quantity + "'" +
-            ", type='" + type + "'" +
-            ", imageURL='" + imageURL + "'" +
-            "}";
-    }    
+        return "Media{" +
+                "stm=" + stm +
+                ", id=" + id +
+                ", title='" + title + '\'' +
+                ", category='" + category + '\'' +
+                ", value=" + value +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", type='" + type + '\'' +
+                ", imageURL='" + imageURL + '\'' +
+                '}';
+    }
 
 }

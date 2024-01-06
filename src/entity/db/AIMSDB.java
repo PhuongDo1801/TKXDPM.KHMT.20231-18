@@ -22,10 +22,9 @@ public class AIMSDB {
             LOGGER.info("Connect database successfully");
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
-        } 
+        }
         return connect;
     }
-    
 
     public static void main(String[] args) {
         AIMSDB.getConnection();

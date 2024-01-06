@@ -8,6 +8,7 @@ Template for managing Capstone's project in the Software Design and Construction
   - [Quick start](#quick-start)
   - [What's included](#whats-included)
   - [Report Content](#report-content)
+  - [](#)
   - [Pull request template](#pull-request-template)
 
 ## Quick start
@@ -161,8 +162,17 @@ The recommended report structure will have a format as follows:
 <summary>Do Dang Phuong</summary>
 <br>
 - Assigned tasks: Feature Search in HomeSreen
+  
 - Implementation details: 
   - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/21
+</details>
+<details>
+<summary>Nguyen Manh Phuong</summary>
+<br>
+- Assigned tasks: Feature CRUD 
+  
+- Implementation details: 
+  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/23
 </details>
 </details>
 ---
