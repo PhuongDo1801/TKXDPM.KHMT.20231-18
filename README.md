@@ -166,6 +166,14 @@ The recommended report structure will have a format as follows:
 - Implementation details: 
   - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/21
 </details>
+<details>
+<summary>Nguyen Manh Phuong</summary>
+<br>
+- Assigned tasks: Feature CRUD 
+  
+- Implementation details: 
+  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/23
+</details>
 </details>
 ---
 
