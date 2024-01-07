@@ -26,6 +26,13 @@ public class Media {
     protected String type;
     protected String imageURL;
 
+    private String mediaName;
+
+    public Media(String mediaName) {
+        this.mediaName = mediaName;
+    }
+
+
     public Media() throws SQLException{
         stm = AIMSDB.getConnection().createStatement();
     }

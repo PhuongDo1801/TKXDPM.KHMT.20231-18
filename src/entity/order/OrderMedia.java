@@ -1,12 +1,18 @@
 package entity.order;
 
 import entity.media.Media;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
 
 public class OrderMedia {
     
     private Media media;
     private int price;
     private int quantity;
+
+    private ObjectProperty<Media> Media;
+    private IntegerProperty Quantity;
+    private IntegerProperty Price;
 
     public OrderMedia(Media media, int quantity, int price) {
         this.media = media;
@@ -47,4 +53,15 @@ public class OrderMedia {
         this.price = price;
     }
 
+    public ObjectProperty<Media> mediaProperty() {
+        return Media;
+    }
+
+    public IntegerProperty quantityProperty() {
+        return Quantity;
+    }
+
+    public IntegerProperty priceProperty() {
+        return Price;
+    }
 }
