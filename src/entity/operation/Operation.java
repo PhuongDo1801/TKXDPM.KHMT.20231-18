@@ -57,19 +57,21 @@ public class Operation  {
 
 //         Thực hiện truy vấn để đếm số lượng sản phẩm đã xóa trong ngày
         String sumSql = "SELECT SUM(value) FROM Operation WHERE timeOperation >= ? AND timeOperation <= ? AND type = 'DELETE';";
-        Connection connection = AIMSDB.getConnection();
         try (
-             PreparedStatement countStatement = connection.prepareStatement(sumSql)) {
+             PreparedStatement countStatement = AIMSDB.getConnection().prepareStatement(sumSql)) {
 
             countStatement.setTimestamp(1, new Timestamp(todayStart.getTime()));
             countStatement.setTimestamp(2, new Timestamp(todayEnd.getTime()));
 
             ResultSet resultSet = countStatement.executeQuery();
+            System.out.println(resultSet);
+            countStatement.close();
             if (resultSet.next()) {
                 int deleteCount = resultSet.getInt(1);
+                countStatement.close();
+                resultSet.close();
                 if (deleteCount < 30 && deleteCount + value <= 30) {
-//                    insertDeleteOperation(sqlDate, value);
-                    deleteMediaById(idMedia);
+                    insertDeleteOperation(sqlDate, value);
                     return 1;
                 } else if (deleteCount < 30 && deleteCount + value > 30) {
                     return 2;
@@ -77,17 +79,17 @@ public class Operation  {
                     return 3;
                 }
             }
-//        } finally {
-//            if (connection != null) {
-//                try {
-//                    connection.close();
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-        }
 
-        return -1;
+        }
+        catch (SQLException e) {
+            System.out.println(e);
+            System.out.println("co loi 2");
+            e.printStackTrace();
+            return -1;
+        }
+        System.out.println("co loi 3");
+        return 1;
+//        return -1;
     }
 
     public int checkValidUpdate(int value, int idMedia) throws SQLException {
@@ -108,6 +110,8 @@ public class Operation  {
             countStatement.setTimestamp(2, new Timestamp(todayEnd.getTime()));
 
             ResultSet resultSet = countStatement.executeQuery();
+            countStatement.close();
+            connection.close();
             if (resultSet.next()) {
                 int deleteCount = resultSet.getInt(1);
                 if (deleteCount < 30 && deleteCount + value <= 30) {
@@ -127,8 +131,7 @@ public class Operation  {
     private void insertDeleteOperation(java.sql.Date sqlDate, int value) throws SQLException {
         String insertSql = "INSERT INTO Operation (timeOperation, type, value) VALUES (?, 'DELETE', ?);";
 
-        try (Connection connection = AIMSDB.getConnection();
-             PreparedStatement insertStatement = connection.prepareStatement(insertSql)) {
+        try (PreparedStatement insertStatement = AIMSDB.getConnection().prepareStatement(insertSql)) {
 
             insertStatement.setTimestamp(1, new Timestamp(sqlDate.getTime()));
             insertStatement.setInt(2, value);
@@ -150,21 +153,6 @@ public class Operation  {
         }
     }
 
-        public boolean deleteMediaById(int id) throws SQLException {
-        String sql = "DELETE FROM Media WHERE id = ?;";
-
-        try (Connection connectionDelete = AIMSDB.getConnection();
-
-             PreparedStatement preparedStatement = connectionDelete.prepareStatement(sql)) {
-            preparedStatement.setInt(1, id);
-            int rowsAffected = preparedStatement.executeUpdate();
-
-            if (rowsAffected > 0) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     private boolean hasReachedDeleteLimit(Date currentTime) throws SQLException {
         // Lấy ngày bắt đầu và kết thúc của ngày hiện tại

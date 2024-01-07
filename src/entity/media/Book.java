@@ -131,7 +131,9 @@ public class Book extends Media {
             int numOfPages = res.getInt("numOfPages");
             String language = res.getString("language");
             String bookCategory = res.getString("bookCategory");
-            
+
+            stm.close();
+            res.close();
             return new Book(id, title, category, price, quantity, type, value,
                             author, coverType, publisher, publishDate, numOfPages, language, bookCategory);
             
@@ -151,6 +153,8 @@ public class Book extends Media {
             preparedStatement.setInt(1, idMedia);
             ResultSet res = preparedStatement.executeQuery();
 
+            preparedStatement.close();
+            res.close();
             if(res.next()) {
                 return new Book()
                         .setAuthor(res.getString("author"))
@@ -181,6 +185,7 @@ public class Book extends Media {
             updateStatement.setInt(8, idMedia);
 
             int rowsAffected = updateStatement.executeUpdate();
+            updateStatement.close();
             return rowsAffected > 0;
         }
 
@@ -249,6 +254,7 @@ public class Book extends Media {
 
             int rowsAffected = preparedStatement.executeUpdate();
 
+            preparedStatement.close();
             if (rowsAffected > 0) {
                 return true;
             }

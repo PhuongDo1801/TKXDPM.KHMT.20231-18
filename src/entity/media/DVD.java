@@ -107,6 +107,7 @@ public class DVD extends Media {
 
     @Override
     public Media getMediaById(int id) throws SQLException {
+        Statement stm = AIMSDB.getConnection().createStatement();
         String sql = "SELECT * FROM "+
                      "aims.DVD " +
                      "INNER JOIN aims.Media " +
@@ -132,6 +133,8 @@ public class DVD extends Media {
         Date releasedDate = res.getDate("releasedDate");
         String filmType = res.getString("filmType");
 
+        stm.close();
+        res.close();
         return new DVD(id, title, category, price, quantity, type, value,discType, director, runtime, studio, subtitles, releasedDate, filmType);
 
         } else {
@@ -159,6 +162,7 @@ public class DVD extends Media {
 
             int rowsAffected = preparedStatement.executeUpdate();
 
+            preparedStatement.close();
             if (rowsAffected > 0) {
                 ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
                 if (generatedKeys.next()) {
@@ -177,7 +181,8 @@ public class DVD extends Media {
         try (PreparedStatement preparedStatement = AIMSDB.getConnection().prepareStatement(sql)) {
             preparedStatement.setInt(1, idMedia);
             ResultSet res = preparedStatement.executeQuery();
-
+            preparedStatement.close();
+            res.close();
             if(res.next()) {
                 return new DVD()
                         .setDiscType(res.getString("discType"))
@@ -208,6 +213,7 @@ public class DVD extends Media {
             updateStatement.setInt(8, idMedia);
 
             int rowsAffected = updateStatement.executeUpdate();
+            updateStatement.close();
             return rowsAffected > 0;
         }
 

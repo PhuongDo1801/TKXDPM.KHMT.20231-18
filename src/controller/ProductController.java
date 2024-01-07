@@ -76,6 +76,7 @@ public class ProductController extends BaseController{
         try {
             return new Media().deleteMediaByIds(ids);
         } catch (SQLException e) {
+            System.out.println("loi deleteProducts");
             e.printStackTrace();
             return false;
         }
@@ -86,6 +87,7 @@ public class ProductController extends BaseController{
         try {
             return new Operation().checkValidDelete(value, idMedia);
         } catch (SQLException e) {
+            System.out.println("co loi checkValidDelete");
             e.printStackTrace();
             return -1;
         }

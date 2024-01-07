@@ -12,10 +12,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import common.exception.ViewCartException;
-import controller.BaseController;
-import controller.HomeController;
-import controller.ProductController;
-import controller.ViewCartController;
+import controller.*;
 import entity.cart.Cart;
 import entity.media.Media;
 import javafx.fxml.FXML;
@@ -32,6 +29,9 @@ import utils.Utils;
 import views.screen.BaseScreenHandler;
 import views.screen.cart.CartScreenHandler;
 import views.screen.product.ManageProductScreenHandler;
+import views.screen.myorder.MyOrder;
+import views.screen.user.ManageUserScreenHandler;
+
 
 /**
  * lớp này không thỏa mãn Single Resposibility Principle - SRP vì có các phương thức thực hiện mục đích khác nhau
@@ -71,6 +71,12 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
 
     @FXML
     private Button btnSearch;
+
+    @FXML
+    private Button btnOrder;
+
+    @FXML
+    private Button manageUserBtn;
 
     @FXML
     private TextField textSearch;
@@ -152,6 +158,35 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
                 throw new ViewCartException(Arrays.toString(e1.getStackTrace()).replaceAll(", ", "\n"));
             }
         });
+
+        btnOrder.setOnMouseClicked(e -> {
+            MyOrder orderScreenHandler;
+            try {
+                LOGGER.info("User clicked to view cart");
+                orderScreenHandler = new MyOrder(new Stage(), Configs.MY_ORDER_PATH);
+                orderScreenHandler.setHomeScreenHandler(this);
+                orderScreenHandler.setPreviousScreen(this);
+                orderScreenHandler.setBController(new MyOrderController());
+                orderScreenHandler.show();
+            } catch (IOException e1) {
+                throw new ViewCartException(Arrays.toString(e1.getStackTrace()).replaceAll(", ", "\n"));
+            }
+        });
+
+        manageUserBtn.setOnMouseClicked(e -> {
+            ManageUserScreenHandler manageUserScreenHandler;
+            try {
+                manageUserScreenHandler = new ManageUserScreenHandler(new Stage(), Configs.MANAGE_USER_PATH);
+                manageUserScreenHandler.setHomeScreenHandler(this);
+                manageUserScreenHandler.setPreviousScreen(this);
+                manageUserScreenHandler.setBController(new UserController());
+                manageUserScreenHandler.requestToViewManageProduct(this);
+//                manageUserScreenHandler.show();
+            } catch (IOException | SQLException e1) {
+                throw new ViewCartException(Arrays.toString(e1.getStackTrace()).replaceAll(", ", "\n"));
+            }
+        });
+
         addMediaHome(this.homeItems);
         addMenuItem(0, "Book", splitMenuBtnSearch);
         addMenuItem(1, "DVD", splitMenuBtnSearch);

@@ -88,7 +88,7 @@ public class ManageProductHandler extends FXMLScreenHandler{
                     int checkCanEdit = productController.checkValidDelete(1, media.getId());
 //                int checkCanEdit = 1;
                     if (checkCanEdit == 1) {
-//                    media.deleteMediaById(media.getId());
+                    media.deleteMediaById(media.getId());
 //                    productController.createMedia(media);
 //                        productController.deleteProduct(media.getId());
 
