@@ -12,6 +12,9 @@ public class User {
     private String address;
     private String phone;
 
+    public User() {
+    }
+
     public User(int id, String name, String email, String address, String phone){
         this.id = id;
         this.name = name;
