@@ -54,6 +54,7 @@ public class Configs {
 	public static final String MANAGE_PRODUCT_PATH = "/views/fxml/manage_product.fxml";
 	public static final String MY_ORDER_PATH = "/views/fxml/my_order.fxml";
 	public static final String CREATE_PRODUCT_PATH = "/views/fxml/create_product.fxml";
+	public static final String CREATE_USER_PATH = "/views/fxml/create_user.fxml";
 	public static final String UPDATE_PRODUCT_PATH = "/views/fxml/update_product.fxml";
 	public static final String DETAIL_PRODUCT_PATH = "/views/fxml/detail_product.fxml";
 	public static final String MANAGE_USER_PATH = "/views/fxml/manage_user.fxml";
