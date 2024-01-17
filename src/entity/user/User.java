@@ -3,8 +3,10 @@ package entity.user;
 import entity.cart.Cart;
 import entity.cart.CartMedia;
 import entity.db.AIMSDB;
+import entity.media.Book;
 import entity.media.Media;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -114,6 +116,24 @@ public class User {
             e.printStackTrace();
         }
         return users;
+    }
+
+    public boolean createUser(User user) throws SQLException {
+        String sql = "INSERT INTO User (name, email, address, phone) VALUES (?, ?, ?, ?);";
+        try (PreparedStatement preparedStatement = AIMSDB.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getEmail());
+            preparedStatement.setString(3, user.getAddress());
+            preparedStatement.setString(4, user.getPhone());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            preparedStatement.close();
+            if (rowsAffected > 0) {
+                return true;
+            }
+        }
+        return false;
     }
     
 }
