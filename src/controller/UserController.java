@@ -1,10 +1,5 @@
 package controller;
 
-import entity.media.Book;
-import entity.media.CD;
-import entity.media.DVD;
-import entity.media.Media;
-import entity.operation.Operation;
 import entity.user.User;
 
 import java.sql.SQLException;
@@ -18,6 +13,15 @@ public class UserController extends BaseController{
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public boolean createUser(User user) {
+        try {
+            return new User().createUser(user);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
