@@ -8,9 +8,7 @@ import java.util.ResourceBundle;
 import entity.media.Media;
 import entity.cart.Cart;
 import entity.cart.CartMedia;
-import entity.order.Order;
 import entity.order.OrderMedia;
-import entity.user.User;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -26,12 +24,57 @@ import javafx.scene.control.TableView;
  */
 public class MyOrderController extends BaseController{
 
-    public List getAllOrder() {
-        try {
-            return new Order().getAllOrder();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+    /**
+     * This method checks the available products in Cart
+     * @throws SQLException
+     * Data Coupling
+     * Phân tích tính Conhesion:
+     * - Functional Cohesion: thực hiện một nhiệm vụ cụ thể là kiểm tra xem sản phẩm có trong giỏ hàng hay không.
+     */
+    public void checkAvailabilityOfProduct() throws SQLException{
+        Cart.getCart().checkAvailabilityOfProduct();
+    }
+
+    /**
+     * This method calculates the cart subtotal
+     * @return subtotal
+     * Data Coupling
+     * Phân tích tính Conhesion:
+     * - Functional Cohesion: thực hiện chức năng tính toán giỏ hàng.
+     * - Informational Cohesion: Trả về số lượng sản phẩm trong giỏ hàng.
+     */
+    public int getCartSubtotal(){
+        int subtotal = Cart.getCart().calSubtotal();
+        return subtotal;
+    }
+
+    @FXML
+    private TableView<OrderMedia> tableView;
+
+    @FXML
+    private TableColumn<OrderMedia, Media> mediaColumn;
+
+    @FXML
+    private TableColumn<OrderMedia, Integer> quantityColumn;
+
+    @FXML
+    private TableColumn<OrderMedia, Integer> priceColumn;
+
+    private ObservableList<OrderMedia> orderMediaList;
+
+    @FXML
+    public void initialize() {
+        // Khởi tạo cột và dữ liệu
+        mediaColumn.setCellValueFactory(cellData -> cellData.getValue().mediaProperty());
+        quantityColumn.setCellValueFactory(cellData -> cellData.getValue().quantityProperty().asObject());
+        priceColumn.setCellValueFactory(cellData -> cellData.getValue().priceProperty().asObject());
+
+        // Khởi tạo dữ liệu mẫu (có thể thay thế bằng dữ liệu thực từ cơ sở dữ liệu)
+        orderMediaList = FXCollections.observableArrayList();
+        orderMediaList.add(new OrderMedia(new Media("Tên Media 1"), 2, 100));
+        orderMediaList.add(new OrderMedia(new Media("Tên Media 2"), 1, 50));
+
+        // Đặt dữ liệu vào TableView
+        tableView.setItems(orderMediaList);
     }
 }

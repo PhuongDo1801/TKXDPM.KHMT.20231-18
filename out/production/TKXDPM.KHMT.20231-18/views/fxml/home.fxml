@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="788.0" prefWidth="1326.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="788.0" prefWidth="1326.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox prefHeight="104.0" prefWidth="1326.0" style="-fx-background-color: #ccebff; -fx-border-color: #33adff;">
          <children>
@@ -64,18 +64,29 @@
                         </Button>
                      </children>
                   </Pane>
+<<<<<<< HEAD
                   <Pane prefHeight="102.0" prefWidth="342.0">
                      <children>
                         <Button fx:id="manageProductBtn" layoutX="-25.0" layoutY="27.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="109.0" text="Manage Product" />
                         <Button fx:id="btnOrder" layoutX="99.0" layoutY="27.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="109.0" text="My Order" />
                         <Button fx:id="manageUserBtn" layoutX="219.0" layoutY="27.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="109.0" text="Manage User" />
+=======
+                  <Pane prefHeight="102.0" prefWidth="141.0">
+                     <children>
+                        <Button fx:id="manageProductBtn" layoutX="5.0" layoutY="27.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="109.0" text="Manage Product" />
+                        <Button fx:id="btnOrder" layoutX="164.0" layoutY="27.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="109.0" text="My Order" />
+>>>>>>> develop
                      </children>
                   </Pane>
                </children>
             </HBox>
             <Pane prefHeight="102.0" prefWidth="151.0">
                <children>
+<<<<<<< HEAD
                   <ImageView fx:id="cartImage" fitHeight="75.0" fitWidth="141.0" layoutX="8.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+=======
+                  <ImageView fx:id="cartImage" fitHeight="75.0" fitWidth="64.0" layoutX="8.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+>>>>>>> develop
                      <image>
                         <Image url="@../../../../../../../../../../mnt/nguyenlm/DriveD/Documents/UNIVERSITY/PERSONAL/PROJECT/Java/TA-TKXDPM/AIMS/assets/images/cart.png" />
                      </image>

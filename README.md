@@ -174,6 +174,14 @@ The recommended report structure will have a format as follows:
 - Implementation details: 
   - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/23
 </details>
+<details>
+<summary>Lam Anh Quan</summary>
+<br>
+- Assigned tasks: Feature Order 
+  
+- Implementation details: 
+  - Pull Request(s): https://github.com/PhuongDo1801/TKXDPM.KHMT.20231-18/pull/24
+</details>
 </details>
 ---
 
