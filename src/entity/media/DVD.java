@@ -181,9 +181,10 @@ public class DVD extends Media {
         try (PreparedStatement preparedStatement = AIMSDB.getConnection().prepareStatement(sql)) {
             preparedStatement.setInt(1, idMedia);
             ResultSet res = preparedStatement.executeQuery();
-            preparedStatement.close();
-            res.close();
+
             if(res.next()) {
+//                preparedStatement.close();
+//                res.close();
                 return new DVD()
                         .setDiscType(res.getString("discType"))
                         .setDirector(res.getString("director"))

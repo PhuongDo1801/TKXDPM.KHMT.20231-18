@@ -83,9 +83,9 @@ public class ProductController extends BaseController{
     }
 
 
-    public int checkValidDelete(int value, int idMedia) {
+    public int checkValidDelete(int value) {
         try {
-            return new Operation().checkValidDelete(value, idMedia);
+            return new Operation().checkValidDelete(value);
         } catch (SQLException e) {
             System.out.println("co loi checkValidDelete");
             e.printStackTrace();
@@ -120,12 +120,25 @@ public class ProductController extends BaseController{
         }
     }
 
-    public int checkValidUpdate(int value, int idMedia) {
+    public int checkValidUpdate(int value, int idMedia, boolean same) {
         try {
-            return new Operation().checkValidUpdate(value, idMedia);
+            return new Operation().checkValidUpdate(value, idMedia, same);
         } catch (SQLException e) {
             e.printStackTrace();
             return -1;
+        }
+    }
+
+    public int getCountUpdateValue(int idMedia) {
+        return new Operation().getCountUpdateValue(idMedia);
+    }
+
+    public boolean insertUpdateOperation(int value, int idMedia, int countUpdateValue) {
+        try {
+            return new Operation().insertUpdateOperation(value, idMedia, countUpdateValue);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 

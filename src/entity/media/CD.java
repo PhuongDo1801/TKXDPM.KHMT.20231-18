@@ -144,9 +144,10 @@ public class CD extends Media {
             preparedStatement.setInt(1, idMedia);
             ResultSet res = preparedStatement.executeQuery();
 
-            preparedStatement.close();
-            res.close();
+
             if(res.next()) {
+//                preparedStatement.close();
+//                res.close();
                 return new CD()
                         .setArtist(res.getString("artist"))
                         .setRecordLabel(res.getString("recordLabel"))

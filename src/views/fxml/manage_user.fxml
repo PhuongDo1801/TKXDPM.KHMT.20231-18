@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,5 +16,6 @@
             <TableColumn fx:id="phoneCol" prefWidth="199.99993896484375" text="phone" />
         </columns>
       </TableView>
+      <Button fx:id="createBtn" layoutX="1093.0" layoutY="112.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="94.0" text="Create User" />
    </children>
 </AnchorPane>

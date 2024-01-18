@@ -70,11 +70,13 @@ public class ManageProductScreenHandler extends BaseScreenHandler implements Ini
     protected Button deleteSelectBtn;
     private ProductController productController;
 
-    public static List<Integer> selectedCheckboxIds = new ArrayList<>();
+//    public static List<Integer> selectedCheckboxIds = new ArrayList<>();
+    private CheckboxIdManager checkboxIdManager;
 
     public ManageProductScreenHandler(Stage stage, String screenPath) throws IOException{
         super(stage, screenPath);
         this.productController = new ProductController();
+        this.checkboxIdManager = CheckboxIdManager.getInstance();
     }
 
 //    public Label getNumMediaCartLabel(){
@@ -156,8 +158,9 @@ public class ManageProductScreenHandler extends BaseScreenHandler implements Ini
             }
         });
 
+
         deleteSelectBtn.setOnMouseClicked(event -> {
-            for (Integer id : selectedCheckboxIds) {
+            for (Integer id : checkboxIdManager.getSelectedCheckboxIds()) {
                 System.out.println(id);
             }
 
@@ -174,11 +177,29 @@ public class ManageProductScreenHandler extends BaseScreenHandler implements Ini
 
             if (result.orElse(cancelButton) == confirmButton) {
                 System.out.println("Đã xác nhận xóa");
-                if(productController.deleteProducts(selectedCheckboxIds)) {
-                    selectedCheckboxIds.clear();
-                    showAlert("Xóa thành công", "Phần tử đã được xóa thành công.", Alert.AlertType.INFORMATION);
-                } else {
-                    showAlert("Lỗi", "Có lỗi xảy ra khi xóa phần tử.", Alert.AlertType.ERROR);
+                try {
+                    int checkCanEdit = productController.checkValidDelete(checkboxIdManager.getSizeCheckboxId());
+                    if (checkCanEdit == 1) {
+                        if(productController.deleteProducts(checkboxIdManager.getSelectedCheckboxIds())) {
+                            checkboxIdManager.clearSelectedCheckboxId();
+                            showAlert("Xóa thành công", "Phần tử đã được xóa thành công.", Alert.AlertType.INFORMATION);
+                        } else {
+                            showAlert("Lỗi", "Có lỗi xảy ra khi xóa phần tử.", Alert.AlertType.ERROR);
+                        }
+
+                    }else if (checkCanEdit == 2){
+                        PopupScreen.error("Only a maximum of 30 deletion operations per day can be performed");
+                        LOGGER.info("Error delete on delete btn checkCanEdit == 2");
+                    } else if (checkCanEdit == 3) {
+                        PopupScreen.error("You have removed 30 products today");
+                        LOGGER.info("Error delete on delete btn checkCanEdit == 3");
+                    } else if (checkCanEdit == -1) {
+                        PopupScreen.error("An error occurred while deleting");
+                        LOGGER.info("Error delete on delete btn checkCanEdit == -1");
+                    }
+                } catch (Exception exp) {
+                    LOGGER.severe("Cannot delete");
+                    exp.printStackTrace();
                 }
             } else {
                 System.out.println("Đã hủy xác nhận xóa");
