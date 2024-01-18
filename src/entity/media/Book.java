@@ -153,9 +153,9 @@ public class Book extends Media {
             preparedStatement.setInt(1, idMedia);
             ResultSet res = preparedStatement.executeQuery();
 
-            preparedStatement.close();
-            res.close();
             if(res.next()) {
+//                preparedStatement.close();
+//                res.close();
                 return new Book()
                         .setAuthor(res.getString("author"))
                         .setCoverType(res.getString("coverType"))
