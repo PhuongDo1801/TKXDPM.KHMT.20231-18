@@ -24,6 +24,7 @@ public class Order {
     private HashMap<String, String> deliveryInfo;
     private int price;
     private int quantity;
+    private String status;
 
     public Order(){
         this.lstOrderMedia = new ArrayList<>();
@@ -33,7 +34,7 @@ public class Order {
         this.lstOrderMedia = lstOrderMedia;
     }
 
-    public Order(int id, String name, String email, String address, String phone, int userID, int shippingFees, int price, int quantity) {
+    public Order(int id, String name, String email, String address, String phone, int userID, int shippingFees, int price, int quantity, String status) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -43,6 +44,7 @@ public class Order {
         this.shippingFees = shippingFees;
         this.price = price;
         this.quantity = quantity;
+        this.status = status;
     }
 
     public int getId() {
@@ -51,6 +53,38 @@ public class Order {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List getLstOrderMedia() {
+        return lstOrderMedia;
+    }
+
+    public void setLstOrderMedia(List lstOrderMedia) {
+        this.lstOrderMedia = lstOrderMedia;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public String getEmail() {
@@ -117,6 +151,14 @@ public class Order {
         this.deliveryInfo = deliveryInfo;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
@@ -131,6 +173,7 @@ public class Order {
                 ", deliveryInfo=" + deliveryInfo +
                 ", price=" + price +
                 ", quantity=" + quantity +
+                ", status='" + status + '\'' +
                 '}';
     }
 
@@ -149,24 +192,33 @@ public class Order {
 
         try {
             Statement stm = AIMSDB.getConnection().createStatement();
-//            String sql = "SELECT * FROM Order LEFT JOIN User ON Order.userID = User.id LEFT JOIN OrderMedia ON Order.id = OrderMedia.orderID";
-            String sql = "SELECT * FROM \"Order\" " +
-                    "LEFT JOIN User ON \"Order\".userID = User.id " +
-                    "LEFT JOIN OrderMedia ON \"Order\".id = OrderMedia.orderID";
+//            String sql = "SELECT O.id, O.email, O.address, O.phone, O.userID, O.shipping_fee, O.status,U.name, OM.price, OM.quantity " +
+//                    "FROM \"Order\" as O " +
+//                    "LEFT JOIN User as U ON O.userID = U.id " +
+//                    "LEFT JOIN OrderMedia as OM ON O.id = OM.orderID";
+            String sql = "SELECT O.id, O.email, O.address, O.phone, O.userID, O.shipping_fee, O.status, U.name, SUM(OM.price) AS total_price, SUM(OM.quantity) AS total_quantity " +
+                    "FROM `Order` AS O " +
+                    "LEFT JOIN User AS U ON O.userID = U.id " +
+                    "LEFT JOIN OrderMedia AS OM ON O.id = OM.orderID " +
+                    "GROUP BY O.id, O.email, O.address, O.phone, O.userID, O.shipping_fee, O.status, U.name";
+
+
 
             ResultSet rs = stm.executeQuery(sql);
 
             while (rs.next()) {
-                int orderID = rs.getInt(1);
+                int orderID = rs.getInt("id");
                 String name = rs.getString("name");
-                String email = rs.getString(2);
-                String address = rs.getString(3);
-                String phone = rs.getString(4);
-                int userID = rs.getInt(5);
-                int shippingFees = rs.getInt(6);
-                int price = rs.getInt("price");
-                int quantity = rs.getInt("quantity");
-                Order order = new Order(orderID, name, email, address, phone, userID, shippingFees, price, quantity);
+                String email = rs.getString("email");
+                String address = rs.getString("address");
+                String phone = rs.getString("phone");
+                int userID = rs.getInt("userID");
+                int shippingFees = rs.getInt("shipping_fee");
+                int price = rs.getInt("total_price");
+                int quantity = rs.getInt("total_quantity");
+                String status = rs.getString("status");
+                status = "Chưa duyệt";
+                Order order = new Order(orderID, name, email, address, phone, userID, shippingFees, price, quantity, status);
                 orders.add(order);
             }
 
