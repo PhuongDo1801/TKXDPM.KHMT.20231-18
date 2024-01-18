@@ -105,6 +105,7 @@ public class UpdateProductHandler extends BaseScreenHandler implements Initializ
     private int idMedia;
     private String destinationFilePath="";
     private int value_old;
+    private int price_old;
 
     @FXML
     private void handleUploadImage() {
@@ -192,6 +193,7 @@ public class UpdateProductHandler extends BaseScreenHandler implements Initializ
             imageView.setImage(image);
             type.setText(media.getType());
             value_old = (media.getValue());
+            price_old = (media.getPrice());
         } catch (SQLException exp) {
             exp.printStackTrace();
         }
@@ -351,8 +353,13 @@ public class UpdateProductHandler extends BaseScreenHandler implements Initializ
 
     private void updateBook() {
         try {
-//            int checkCanEdit = productController.checkValidUpdate(1, media.getId());
-            int checkCanEdit = 1;
+            int checkCanEdit = -1;
+            if (price_old == Integer.parseInt(price.getText())) {
+                checkCanEdit = productController.checkValidUpdate(1, idMedia, true);
+            } else {
+                checkCanEdit = productController.checkValidUpdate(1, idMedia, false);
+            }
+            int countUpdateValue = productController.getCountUpdateValue(idMedia);
             if (checkCanEdit == 1) {
                 if(!validateMedia("book")) {
                     PopupScreen.error("Media data form error");
@@ -360,17 +367,25 @@ public class UpdateProductHandler extends BaseScreenHandler implements Initializ
                     PopupScreen.error("Book data form error");
                 } else if (validateMedia("book")  && validateBook() ) {
                     if (productController.updateMediaById(idMedia, media) && productController.updateBookById(idMedia, book)) {
+                        if (price_old == Integer.parseInt(price.getText())) {
+                            productController.insertUpdateOperation(1, idMedia, countUpdateValue);
+                        } else {
+                            productController.insertUpdateOperation(1, idMedia, countUpdateValue + 1);
+                        }
                         PopupScreen.success("Update book success");
                     } else {
                         PopupScreen.error("Book update error");
                     }
                 }
 
-            }else if (checkCanEdit == 2){
+            } else if (checkCanEdit == 2){
                 PopupScreen.error("Only a maximum of 30 update operations per day can be performed");
                 LOGGER.info("Error update on update btn checkCanEdit == 2");
             } else if (checkCanEdit == 3) {
                 PopupScreen.error("You have update 30 products today");
+                LOGGER.info("Error update on delete btn checkCanEdit == 3");
+            } else if (checkCanEdit == 4) {
+                PopupScreen.error("You can only update the value of this product a maximum of 2 times per day");
                 LOGGER.info("Error update on delete btn checkCanEdit == 3");
             } else if (checkCanEdit == -1) {
                 PopupScreen.error("An error occurred while update");
@@ -384,8 +399,14 @@ public class UpdateProductHandler extends BaseScreenHandler implements Initializ
 
     private void updateDVD() {
         try {
-            int checkCanEdit = 1;
-            //int checkCanEdit = productController.checkValidUpdate(1, media.getId());
+            int checkCanEdit = -1;
+            if (price_old == Integer.parseInt(price.getText())) {
+                checkCanEdit = productController.checkValidUpdate(1, idMedia, true);
+            } else {
+                checkCanEdit = productController.checkValidUpdate(1, idMedia, false);
+            }
+            int countUpdateValue = productController.getCountUpdateValue(idMedia);
+            System.out.println("coutupdate value: " + countUpdateValue);
             if (checkCanEdit == 1) {
                 if(!validateMedia("dvd") ) {
                     PopupScreen.error("Media data form error");
@@ -393,6 +414,11 @@ public class UpdateProductHandler extends BaseScreenHandler implements Initializ
                     PopupScreen.error("DVD data form error");
                 } else if (validateMedia("dvd")  && validateDVD() != null) {
                     if (productController.updateMediaById(idMedia, media) && productController.updateDVDId(idMedia, dvd)) {
+                        if (price_old == Integer.parseInt(price.getText())) {
+                            productController.insertUpdateOperation(1, idMedia, countUpdateValue);
+                        } else {
+                            productController.insertUpdateOperation(1, idMedia, countUpdateValue + 1);
+                        }
                         PopupScreen.success("Update dvd success");
                     } else {
                         PopupScreen.error("DVD update error");
@@ -404,6 +430,9 @@ public class UpdateProductHandler extends BaseScreenHandler implements Initializ
                 LOGGER.info("Error update on update btn checkCanEdit == 2");
             } else if (checkCanEdit == 3) {
                 PopupScreen.error("You have update 30 products today");
+                LOGGER.info("Error update on delete btn checkCanEdit == 3");
+            } else if (checkCanEdit == 4) {
+                PopupScreen.error("You can only update the value of this product a maximum of 2 times per day");
                 LOGGER.info("Error update on delete btn checkCanEdit == 3");
             } else if (checkCanEdit == -1) {
                 PopupScreen.error("An error occurred while update");
@@ -417,8 +446,14 @@ public class UpdateProductHandler extends BaseScreenHandler implements Initializ
 
     private void updateCD() {
         try {
-            int checkCanEdit = 1;
-            // int checkCanEdit = productController.checkValidUpdate(1, media.getId());
+            int checkCanEdit = -1;
+            if (price_old == Integer.parseInt(price.getText())) {
+                checkCanEdit = productController.checkValidUpdate(1, idMedia, true);
+            } else {
+                checkCanEdit = productController.checkValidUpdate(1, idMedia, false);
+            }
+            int countUpdateValue = productController.getCountUpdateValue(idMedia);
+
             if (checkCanEdit == 1) {
                 if(!validateMedia("cd")) {
                     PopupScreen.error("Media data form error");
@@ -426,6 +461,11 @@ public class UpdateProductHandler extends BaseScreenHandler implements Initializ
                     PopupScreen.error("CD data form error");
                 } else if (validateMedia("cd")  && validateCD() != null) {
                     if (productController.updateMediaById(idMedia, media) && productController.updateCDById(idMedia, cd)) {
+                        if (price_old == Integer.parseInt(price.getText())) {
+                            productController.insertUpdateOperation(1, idMedia, countUpdateValue);
+                        } else {
+                            productController.insertUpdateOperation(1, idMedia, countUpdateValue + 1);
+                        }
                         PopupScreen.success("Update cd success");
                     } else {
                         PopupScreen.error("CD update error");
@@ -437,6 +477,9 @@ public class UpdateProductHandler extends BaseScreenHandler implements Initializ
                 LOGGER.info("Error update on update btn checkCanEdit == 2");
             } else if (checkCanEdit == 3) {
                 PopupScreen.error("You have update 30 products today");
+                LOGGER.info("Error update on delete btn checkCanEdit == 3");
+            } else if (checkCanEdit == 4) {
+                PopupScreen.error("You can only update the value of this product a maximum of 2 times per day");
                 LOGGER.info("Error update on delete btn checkCanEdit == 3");
             } else if (checkCanEdit == -1) {
                 PopupScreen.error("An error occurred while update");

@@ -15,20 +15,21 @@ public class Operation  {
     private Date timeOperation;
     private String type;
     private String description;
-
     private int value;
+    private int idMedia;
+    private int countUpdateValue;
 
-    
     public Operation (){
-
     }
 
-    public Operation(int id, Date timeOperation, String type, String description, int value) {
+    public Operation(int id, Date timeOperation, String type, String description, int value, int idMedia, int countUpdateValue) {
         this.id = id;
         this.timeOperation = timeOperation;
         this.type = type;
         this.description = description;
         this.value = value;
+        this.idMedia = idMedia;
+        this.countUpdateValue = countUpdateValue;
     }
 
     public List getAllOperation() throws SQLException{
@@ -47,7 +48,34 @@ public class Operation  {
         return medium;
     }
 
-    public int checkValidDelete(int value, int idMedia) throws SQLException {
+    public int getCountUpdateValue(int idMedia) {
+        Date currentTime = new Date();
+
+        Date todayStart = getTodayStart(currentTime);
+        Date todayEnd = getTodayEnd(currentTime);
+
+        String sumSql = "SELECT MAX(countUpdateValue) FROM Operation WHERE timeOperation >= ? AND timeOperation <= ? AND type = 'UPDATE' AND idMedia = ?;";
+        Connection connection = AIMSDB.getConnection();
+        try (PreparedStatement countStatement = connection.prepareStatement(sumSql)) {
+
+            countStatement.setTimestamp(1, new Timestamp(todayStart.getTime()));
+            countStatement.setTimestamp(2, new Timestamp(todayEnd.getTime()));
+            countStatement.setInt(3, idMedia);
+
+            try (ResultSet resultSet = countStatement.executeQuery()) {
+                resultSet.next();
+                int updateCount = resultSet.getInt(1);
+                System.out.println("update count " + updateCount);
+
+                return updateCount;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public int checkValidDelete(int value) throws SQLException {
         Date currentTime = new Date();
 
         java.sql.Date sqlDate = new java.sql.Date(currentTime.getTime());
@@ -55,21 +83,19 @@ public class Operation  {
         Date todayStart = getTodayStart(currentTime);
         Date todayEnd = getTodayEnd(currentTime);
 
-//         Thực hiện truy vấn để đếm số lượng sản phẩm đã xóa trong ngày
+        // Thực hiện truy vấn để đếm số lượng sản phẩm đã xóa trong ngày
         String sumSql = "SELECT SUM(value) FROM Operation WHERE timeOperation >= ? AND timeOperation <= ? AND type = 'DELETE';";
-        Connection connection = AIMSDB.getConnection();
-        try (
-             PreparedStatement countStatement = connection.prepareStatement(sumSql)) {
+        try (PreparedStatement countStatement = AIMSDB.getConnection().prepareStatement(sumSql)) {
 
             countStatement.setTimestamp(1, new Timestamp(todayStart.getTime()));
             countStatement.setTimestamp(2, new Timestamp(todayEnd.getTime()));
 
-            ResultSet resultSet = countStatement.executeQuery();
-            if (resultSet.next()) {
+            try (ResultSet resultSet = countStatement.executeQuery()) {
+                resultSet.next();
                 int deleteCount = resultSet.getInt(1);
+
                 if (deleteCount < 30 && deleteCount + value <= 30) {
-//                    insertDeleteOperation(sqlDate, value);
-                    deleteMediaById(idMedia);
+                    insertDeleteOperation(sqlDate, value);
                     return 1;
                 } else if (deleteCount < 30 && deleteCount + value > 30) {
                     return 2;
@@ -77,20 +103,15 @@ public class Operation  {
                     return 3;
                 }
             }
-//        } finally {
-//            if (connection != null) {
-//                try {
-//                    connection.close();
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
         }
-
         return -1;
     }
 
-    public int checkValidUpdate(int value, int idMedia) throws SQLException {
+
+    public int checkValidUpdate(int value, int idMedia, boolean same) throws SQLException {
         Date currentTime = new Date();
 
         java.sql.Date sqlDate = new java.sql.Date(currentTime.getTime());
@@ -101,22 +122,29 @@ public class Operation  {
 //         Thực hiện truy vấn để đếm số lượng sản phẩm đã cập nhật trong ngày
         String sumSql = "SELECT SUM(value) FROM Operation WHERE timeOperation >= ? AND timeOperation <= ? AND type = 'UPDATE';";
         Connection connection = AIMSDB.getConnection();
-        try (
-                PreparedStatement countStatement = connection.prepareStatement(sumSql)) {
+        try (PreparedStatement countStatement = connection.prepareStatement(sumSql)) {
 
             countStatement.setTimestamp(1, new Timestamp(todayStart.getTime()));
             countStatement.setTimestamp(2, new Timestamp(todayEnd.getTime()));
 
-            ResultSet resultSet = countStatement.executeQuery();
-            if (resultSet.next()) {
-                int deleteCount = resultSet.getInt(1);
-                if (deleteCount < 30 && deleteCount + value <= 30) {
-                    insertUpdateOperation(sqlDate, value);
+            try (ResultSet resultSet = countStatement.executeQuery()) {
+                resultSet.next();
+                int updateCount = resultSet.getInt(1);
+                int checkValidUpdateValue = checkValidUpdateValue(idMedia);
+                if(same) {
+                    checkValidUpdateValue = 1;
+                }
+                System.out.println("checkvalidupdate value" + checkValidUpdateValue);
+
+                if (updateCount < 30 && updateCount + value <= 30 && checkValidUpdateValue == 1) {
+//                    insertUpdateOperation(sqlDate, value, idMedia);
                     return 1;
-                } else if (deleteCount < 30 && deleteCount + value > 30) {
+                } else if (updateCount < 30 && updateCount + value > 30) {
                     return 2;
-                } else if (deleteCount >= 30) {
+                } else if (updateCount >= 30) {
                     return 3;
+                } else if (checkValidUpdateValue == 2) {
+                    return 4;
                 }
             }
         }
@@ -124,71 +152,80 @@ public class Operation  {
         return -1;
     }
 
-    private void insertDeleteOperation(java.sql.Date sqlDate, int value) throws SQLException {
-        String insertSql = "INSERT INTO Operation (timeOperation, type, value) VALUES (?, 'DELETE', ?);";
+    public int checkValidUpdateValue(int idMedia) {
+        Date currentTime = new Date();
 
-        try (Connection connection = AIMSDB.getConnection();
-             PreparedStatement insertStatement = connection.prepareStatement(insertSql)) {
-
-            insertStatement.setTimestamp(1, new Timestamp(sqlDate.getTime()));
-            insertStatement.setInt(2, value);
-
-            insertStatement.executeUpdate();
-        }
-    }
-
-    private void insertUpdateOperation(java.sql.Date sqlDate, int value) throws SQLException {
-        String insertSql = "INSERT INTO Operation (timeOperation, type, value) VALUES (?, 'UPDATE', ?);";
-
-        try (Connection connection = AIMSDB.getConnection();
-             PreparedStatement insertStatement = connection.prepareStatement(insertSql)) {
-
-            insertStatement.setTimestamp(1, new Timestamp(sqlDate.getTime()));
-            insertStatement.setInt(2, value);
-
-            insertStatement.executeUpdate();
-        }
-    }
-
-        public boolean deleteMediaById(int id) throws SQLException {
-        String sql = "DELETE FROM Media WHERE id = ?;";
-
-        try (Connection connectionDelete = AIMSDB.getConnection();
-
-             PreparedStatement preparedStatement = connectionDelete.prepareStatement(sql)) {
-            preparedStatement.setInt(1, id);
-            int rowsAffected = preparedStatement.executeUpdate();
-
-            if (rowsAffected > 0) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean hasReachedDeleteLimit(Date currentTime) throws SQLException {
-        // Lấy ngày bắt đầu và kết thúc của ngày hiện tại
         Date todayStart = getTodayStart(currentTime);
         Date todayEnd = getTodayEnd(currentTime);
 
-        // Thực hiện truy vấn để đếm số lượng sản phẩm đã xóa trong ngày
-//        String countSql = "SELECT COUNT(*) FROM Operation WHERE timeOperation >= ? AND timeOperation <= ? AND type = 'DELETE';";
-        String sumSql = "SELECT SUM(value) FROM Operation WHERE timeOperation >= ? AND timeOperation <= ? AND type = 'DELETE';";
-        try (Connection connection = AIMSDB.getConnection();
-             PreparedStatement countStatement = connection.prepareStatement(sumSql)) {
+        String sumSql = "SELECT SUM(countUpdateValue) FROM Operation WHERE timeOperation >= ? AND timeOperation <= ? AND type = 'UPDATE' AND idMedia = ?;";
+        Connection connection = AIMSDB.getConnection();
+        try (PreparedStatement countStatement = connection.prepareStatement(sumSql)) {
 
             countStatement.setTimestamp(1, new Timestamp(todayStart.getTime()));
             countStatement.setTimestamp(2, new Timestamp(todayEnd.getTime()));
+            countStatement.setInt(3, idMedia);
 
-            ResultSet resultSet = countStatement.executeQuery();
-            if (resultSet.next()) {
-                int deleteCount = resultSet.getInt(1);
-                return deleteCount < 30;
+            try (ResultSet resultSet = countStatement.executeQuery()) {
+                resultSet.next();
+                int updateCount = resultSet.getInt(1);
+                System.out.println("update count");
+                System.out.println(updateCount);
+                if (updateCount < 2) {
+                    return 1;
+                } else {
+                    return 2;
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    private void insertDeleteOperation(java.sql.Date sqlDate, int value) throws SQLException {
+        String insertSql = "INSERT INTO Operation (timeOperation, type, value) VALUES (?, 'DELETE', ?);";
+        try (PreparedStatement insertStatement = AIMSDB.getConnection().prepareStatement(insertSql)) {
+            insertStatement.setTimestamp(1, new Timestamp(sqlDate.getTime()));
+            insertStatement.setInt(2, value);
+            insertStatement.executeUpdate();
+        }
+    }
+
+    public boolean insertUpdateOperation(int value, int idMedia, int countUpdateValue) throws SQLException {
+        Date currentTime = new Date();
+        java.sql.Date sqlDate = new java.sql.Date(currentTime.getTime());
+
+        String insertSql = "INSERT INTO Operation (timeOperation, type, value, idMedia, countUpdateValue) VALUES (?, 'UPDATE', ?, ?, ?);";
+        try (PreparedStatement insertStatement = AIMSDB.getConnection().prepareStatement(insertSql)) {
+            insertStatement.setTimestamp(1, new Timestamp(sqlDate.getTime()));
+            insertStatement.setInt(2, value);
+            insertStatement.setInt(3, idMedia);
+            insertStatement.setInt(4, countUpdateValue);
+            insertStatement.executeUpdate();
+            insertStatement.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
 
-        return false;
     }
+
+//    private void insertUpdateOperation(java.sql.Date sqlDate, int value, int idMedia) throws SQLException {
+//        String insertSql = "INSERT INTO Operation (timeOperation, type, value, idMedia) VALUES (?, 'UPDATE', ?, ?);";
+//        System.out.println("chon insert 2");
+//        try (Connection connection = AIMSDB.getConnection();
+//             PreparedStatement insertStatement = connection.prepareStatement(insertSql)) {
+//            System.out.println("chon insert 3");
+//            insertStatement.setTimestamp(1, new Timestamp(sqlDate.getTime()));
+//            insertStatement.setInt(2, value);
+//            insertStatement.setInt(3, idMedia);
+//            System.out.println("chon insert 4 ");
+//            insertStatement.executeUpdate();
+//        }
+//    }
+
 
     private Date getTodayStart(Date date) {
         return new Date(date.getYear(), date.getMonth(), date.getDate(), 0, 0, 0);
@@ -243,6 +280,24 @@ public class Operation  {
         return this;
     }
 
+    public int getIdMedia() {
+        return idMedia;
+    }
+
+    public Operation setIdMedia(int idMedia) {
+        this.idMedia = idMedia;
+        return this;
+    }
+
+    public int getCountUpdateValue() {
+        return countUpdateValue;
+    }
+
+    public Operation setCountUpdateValue(int countUpdateValue) {
+        this.countUpdateValue = countUpdateValue;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "Operation{" +
@@ -251,6 +306,8 @@ public class Operation  {
                 ", type='" + type + '\'' +
                 ", description='" + description + '\'' +
                 ", value=" + value +
+                ", idMedia=" + idMedia +
+                ", countUpdateValue=" + countUpdateValue +
                 '}';
     }
 }

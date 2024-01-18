@@ -74,6 +74,7 @@ public class CD extends Media {
 
     @Override
     public Media getMediaById(int id) throws SQLException {
+        Statement stm = AIMSDB.getConnection().createStatement();
         String sql = "SELECT * FROM "+
                      "aims.CD " +
                      "INNER JOIN aims.Media " +
@@ -95,7 +96,9 @@ public class CD extends Media {
             String recordLabel = res.getString("recordLabel");
             String musicType = res.getString("musicType");
             Date releasedDate = res.getDate("releasedDate");
-           
+
+            stm.close();
+            res.close();
             return new CD(id, title, category, price, quantity, type, value,
                           artist, recordLabel, musicType, releasedDate);
             
@@ -121,6 +124,7 @@ public class CD extends Media {
 
             int rowsAffected = preparedStatement.executeUpdate();
 
+            preparedStatement.close();
             if (rowsAffected > 0) {
                 ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
                 if (generatedKeys.next()) {
@@ -140,7 +144,10 @@ public class CD extends Media {
             preparedStatement.setInt(1, idMedia);
             ResultSet res = preparedStatement.executeQuery();
 
+
             if(res.next()) {
+//                preparedStatement.close();
+//                res.close();
                 return new CD()
                         .setArtist(res.getString("artist"))
                         .setRecordLabel(res.getString("recordLabel"))
@@ -164,6 +171,7 @@ public class CD extends Media {
             updateStatement.setInt(5, idMedia);
 
             int rowsAffected = updateStatement.executeUpdate();
+            updateStatement.close();
             return rowsAffected > 0;
         }
 
