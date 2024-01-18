@@ -10,13 +10,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import utils.Configs;
 import utils.Utils;
 import views.screen.BaseScreenHandler;
 import java.io.IOException;
 import java.net.URL;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
@@ -38,6 +38,9 @@ public class ManageUserScreenHandler extends BaseScreenHandler implements Initia
     private TableColumn<User, String> addressCol;
     @FXML
     private TableColumn<User, String> phoneCol;
+
+    @FXML
+    protected Button createBtn;
 
     private UserController userController;
 
@@ -85,6 +88,21 @@ public class ManageUserScreenHandler extends BaseScreenHandler implements Initia
         emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
+
+        createBtn.setOnMouseClicked(event -> {
+            try {
+                UserController uController = new UserController();
+                CreateUserHandler createUserHandler = new CreateUserHandler(new Stage(), Configs.CREATE_USER_PATH);
+                createUserHandler.setPreviousScreen(this);
+                createUserHandler.setHomeScreenHandler(homeScreenHandler);
+                createUserHandler.setScreenTitle("Create User Screen");
+                createUserHandler.setBController(uController);
+                createUserHandler.show();
+            } catch (Exception exp) {
+                LOGGER.severe("Cannot delete");
+                exp.printStackTrace();
+            }
+        });
     }
 
 
