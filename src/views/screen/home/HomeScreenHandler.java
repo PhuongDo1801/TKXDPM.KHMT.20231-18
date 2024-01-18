@@ -30,6 +30,8 @@ import views.screen.BaseScreenHandler;
 import views.screen.cart.CartScreenHandler;
 import views.screen.product.ManageProductScreenHandler;
 import views.screen.myorder.MyOrder;
+import views.screen.user.ManageUserScreenHandler;
+
 
 /**
  * lớp này không thỏa mãn Single Resposibility Principle - SRP vì có các phương thức thực hiện mục đích khác nhau
@@ -74,6 +76,9 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
     private Button btnOrder;
 
     @FXML
+    private Button manageUserBtn;
+
+    @FXML
     private TextField textSearch;
 
     private List homeItems;
@@ -111,7 +116,7 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
             LOGGER.info("Errors occured: " + e.getMessage());
             e.printStackTrace();
         }
-        
+
         // Xử lý sự kiện nhấn Enter trong ô tìm kiếm
         textSearch.setOnKeyPressed(event -> {
             if (event.getCode() == javafx.scene.input.KeyCode.ENTER) {
@@ -122,11 +127,11 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
         btnSearch.setOnMouseClicked(e -> {
             handleSearchEvent();
         });
-            
+
         aimsImage.setOnMouseClicked(e -> {
             addMediaHome(this.homeItems);
         });
-        
+
         cartImage.setOnMouseClicked(e -> {
             CartScreenHandler cartScreen;
             try {
@@ -158,12 +163,26 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
             MyOrder orderScreenHandler;
             try {
                 LOGGER.info("User clicked to view cart");
-                orderScreenHandler = new MyOrder(this.stage, Configs.MY_ORDER_PATH);
+                orderScreenHandler = new MyOrder(new Stage(), Configs.MY_ORDER_PATH);
                 orderScreenHandler.setHomeScreenHandler(this);
                 orderScreenHandler.setPreviousScreen(this);
                 orderScreenHandler.setBController(new MyOrderController());
                 orderScreenHandler.show();
             } catch (IOException e1) {
+                throw new ViewCartException(Arrays.toString(e1.getStackTrace()).replaceAll(", ", "\n"));
+            }
+        });
+
+        manageUserBtn.setOnMouseClicked(e -> {
+            ManageUserScreenHandler manageUserScreenHandler;
+            try {
+                manageUserScreenHandler = new ManageUserScreenHandler(new Stage(), Configs.MANAGE_USER_PATH);
+                manageUserScreenHandler.setHomeScreenHandler(this);
+                manageUserScreenHandler.setPreviousScreen(this);
+                manageUserScreenHandler.setBController(new UserController());
+                manageUserScreenHandler.requestToViewManageProduct(this);
+//                manageUserScreenHandler.show();
+            } catch (IOException | SQLException e1) {
                 throw new ViewCartException(Arrays.toString(e1.getStackTrace()).replaceAll(", ", "\n"));
             }
         });
@@ -238,7 +257,7 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
         String keyword = textSearch.getText();
         performSearch(keyword);
     }
-    
+
     private void performSearch(String keyword) {
         List filteredItems = new ArrayList<>();
         homeItems.forEach(item -> {
@@ -249,7 +268,7 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
         });
         addMediaHome(filteredItems);
     }
-    
-    
-    
+
+
+
 }

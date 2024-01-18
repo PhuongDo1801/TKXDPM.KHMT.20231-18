@@ -2,6 +2,7 @@ package entity.media;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -16,7 +17,7 @@ public class Media {
 
     private static Logger LOGGER = Utils.getLogger(Media.class.getName());
 
-    protected Statement stm;
+//    protected Statement stm;
     protected int id;
     protected String title;
     protected String category;
@@ -34,7 +35,7 @@ public class Media {
 
 
     public Media() throws SQLException{
-        stm = AIMSDB.getConnection().createStatement();
+        Statement stm = AIMSDB.getConnection().createStatement();
     }
 
     public Media (int id, String title, String category, int price, int quantity, String type, int value) throws SQLException{
@@ -78,20 +79,24 @@ public class Media {
     }
 
     public List getAllMedia() throws SQLException{
-        Statement stm = AIMSDB.getConnection().createStatement();
-        ResultSet res = stm.executeQuery("select * from Media");
         ArrayList medium = new ArrayList<>();
-        while (res.next()) {
-            Media media = new Media()
-                .setId(res.getInt("id"))
-                .setTitle(res.getString("title"))
-                .setQuantity(res.getInt("quantity"))
-                .setCategory(res.getString("category"))
-                .setMediaURL(res.getString("imageUrl"))
-                .setPrice(res.getInt("price"))
-                .setType(res.getString("type"))
-                 .setValue(res.getInt("value"));
-            medium.add(media);
+        String sql = "select * from Media";
+        try(PreparedStatement preparedStatement = AIMSDB.getConnection().prepareStatement(sql)) {
+            ResultSet res = preparedStatement.executeQuery();
+            while (res.next()) {
+                Media media = new Media()
+                        .setId(res.getInt("id"))
+                        .setTitle(res.getString("title"))
+                        .setQuantity(res.getInt("quantity"))
+                        .setCategory(res.getString("category"))
+                        .setMediaURL(res.getString("imageUrl"))
+                        .setPrice(res.getInt("price"))
+                        .setType(res.getString("type"))
+                        .setValue(res.getInt("value"));
+                medium.add(media);
+            }
+            res.close();
+            preparedStatement.close();
         }
         return medium;
     }
@@ -147,46 +152,37 @@ public class Media {
 
     public boolean deleteMediaById(int id) throws SQLException {
         String sql = "DELETE FROM Media WHERE id = ?;";
-        Connection connectionDelete = null;
-        try {
-            connectionDelete = AIMSDB.getConnection();
-            if (connectionDelete == null) {
-                // Handle the case where the connection could not be established
-                throw new SQLException("Could not establish a connection to the database.");
-            }
-
-            PreparedStatement preparedStatement = connectionDelete.prepareStatement(sql);
+        try(PreparedStatement preparedStatement = AIMSDB.getConnection().prepareStatement(sql)) {
             preparedStatement.setInt(1, id);
             int rowsAffected = preparedStatement.executeUpdate();
+
+            preparedStatement.close();
 
             return rowsAffected > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
-        } finally {
-            if (connectionDelete != null) {
-                try {
-                    connectionDelete.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 
 
     public boolean deleteMediaByIds(List<Integer> ids) {
-        String sql = "DELETE FROM Media WHERE id IN (?);";
+        // Tạo chuỗi tham số có độ dài bằng với số lượng phần tử trong danh sách ids
+        String params = String.join(",", Collections.nCopies(ids.size(), "?"));
 
-        try (Connection connection = AIMSDB.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        String sql = "DELETE FROM Media WHERE id IN (" + params + ");";
 
-            String idList = String.join(",", ids.stream().map(String::valueOf).toArray(String[]::new));
+        try (PreparedStatement preparedStatement = AIMSDB.getConnection().prepareStatement(sql)) {
 
-            preparedStatement.setString(1, idList);
+            // Thiết lập giá trị cho từng tham số
+            for (int i = 0; i < ids.size(); i++) {
+                preparedStatement.setInt(i + 1, ids.get(i));
+            }
 
             int rowsAffected = preparedStatement.executeUpdate();
+
+            preparedStatement.close();
 
             return rowsAffected > 0;
 
@@ -195,6 +191,7 @@ public class Media {
             return false;
         }
     }
+
 
 
     public boolean updateMediaById(int id, Media updatedMedia) throws SQLException {
@@ -210,7 +207,7 @@ public class Media {
             preparedStatement.setInt(8, id);
 
             int rowsAffected = preparedStatement.executeUpdate();
-
+            preparedStatement.close();
             return rowsAffected > 0;
         }
     }
@@ -291,7 +288,6 @@ public class Media {
     @Override
     public String toString() {
         return "Media{" +
-                "stm=" + stm +
                 ", id=" + id +
                 ", title='" + title + '\'' +
                 ", category='" + category + '\'' +

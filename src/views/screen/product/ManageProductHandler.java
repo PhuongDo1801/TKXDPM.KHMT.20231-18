@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -62,6 +63,7 @@ public class ManageProductHandler extends FXMLScreenHandler{
     private Operation operation;
     private ManageProductScreenHandler home;
     private ProductController productController;
+    private CheckboxIdManager checkboxIdManager;
 
     public ManageProductHandler(String screenPath, Media media, ManageProductScreenHandler home) throws SQLException, IOException{
         super(screenPath);
@@ -69,6 +71,7 @@ public class ManageProductHandler extends FXMLScreenHandler{
         this.home = home;
         this.operation = new Operation();
         this.productController = new ProductController();
+        this.checkboxIdManager = CheckboxIdManager.getInstance();
 
         deleteBtn.setOnAction(event -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -85,15 +88,11 @@ public class ManageProductHandler extends FXMLScreenHandler{
             if (result.orElse(cancelButton) == confirmButton) {
                 System.out.println("Đã xác nhận xóa");
                 try {
-                    int checkCanEdit = productController.checkValidDelete(1, media.getId());
-//                int checkCanEdit = 1;
+                    int checkCanEdit = productController.checkValidDelete(1);
                     if (checkCanEdit == 1) {
-//                    media.deleteMediaById(media.getId());
-//                    productController.createMedia(media);
-//                        productController.deleteProduct(media.getId());
-
-
-                    }else if (checkCanEdit == 2){
+                        productController.deleteProduct(media.getId());
+                        showAlert("Xóa thành công", "Phần tử đã được xóa thành công.", Alert.AlertType.INFORMATION);
+                    } else if (checkCanEdit == 2){
                         PopupScreen.error("Only a maximum of 30 deletion operations per day can be performed");
                         LOGGER.info("Error delete on delete btn checkCanEdit == 2");
                     } else if (checkCanEdit == 3) {
@@ -103,7 +102,6 @@ public class ManageProductHandler extends FXMLScreenHandler{
                         PopupScreen.error("An error occurred while deleting");
                         LOGGER.info("Error delete on delete btn checkCanEdit == -1");
                     }
-                    PopupScreen.success("Delete success");
                 } catch (Exception exp) {
                     LOGGER.severe("Cannot delete");
                     exp.printStackTrace();
@@ -116,12 +114,8 @@ public class ManageProductHandler extends FXMLScreenHandler{
 
         updateBtn.setOnMouseClicked(event -> {
             try {
-//                switchToView(Configs.CREATE_PRODUCT_PATH);
                 ProductController productController = new ProductController();
-//                System.out.println(media.toString());
                 UpdateProductHandler updateProductHandler = new UpdateProductHandler(new Stage(), Configs.UPDATE_PRODUCT_PATH, media);
-//                updateProductHandler.setPreviousScreen(this);
-//                updateProductHandler.setHomeScreenHandler(homeScreenHandler);
                 updateProductHandler.setScreenTitle("Update Product Screen");
                 updateProductHandler.setBController(productController);
                 updateProductHandler.show();
@@ -147,17 +141,28 @@ public class ManageProductHandler extends FXMLScreenHandler{
         checkBox.setOnAction(event -> {
             int mediaId = media.getId();
 
-            if (checkBox.isSelected() && ManageProductScreenHandler.selectedCheckboxIds.size() < 10) {
-                ManageProductScreenHandler.selectedCheckboxIds.add(mediaId);
+            if (checkBox.isSelected() && checkboxIdManager.getSizeCheckboxId() < 10) {
+                checkboxIdManager.addSelectedCheckboxId(mediaId);
                 System.out.println("Added id: " + mediaId);
             } else if (!checkBox.isSelected()){
-                ManageProductScreenHandler.selectedCheckboxIds.remove(mediaId);
+                checkboxIdManager.removeSelectedCheckboxId(mediaId);
                 System.out.println("Removed id: " + mediaId);
             }
         });
 
 
         setMediaInfo();
+    }
+
+    public static void showAlert(String title, String content, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+
+        alert.getButtonTypes().setAll(ButtonType.OK);
+
+        alert.showAndWait();
     }
 
     public Media getMedia(){
