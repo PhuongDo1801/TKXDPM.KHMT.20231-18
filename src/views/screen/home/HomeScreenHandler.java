@@ -116,7 +116,7 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
             LOGGER.info("Errors occured: " + e.getMessage());
             e.printStackTrace();
         }
-        
+
         // Xử lý sự kiện nhấn Enter trong ô tìm kiếm
         textSearch.setOnKeyPressed(event -> {
             if (event.getCode() == javafx.scene.input.KeyCode.ENTER) {
@@ -127,11 +127,11 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
         btnSearch.setOnMouseClicked(e -> {
             handleSearchEvent();
         });
-            
+
         aimsImage.setOnMouseClicked(e -> {
             addMediaHome(this.homeItems);
         });
-        
+
         cartImage.setOnMouseClicked(e -> {
             CartScreenHandler cartScreen;
             try {
@@ -257,7 +257,7 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
         String keyword = textSearch.getText();
         performSearch(keyword);
     }
-    
+
     private void performSearch(String keyword) {
         List filteredItems = new ArrayList<>();
         homeItems.forEach(item -> {
@@ -268,7 +268,7 @@ public class HomeScreenHandler extends BaseScreenHandler implements Initializabl
         });
         addMediaHome(filteredItems);
     }
-    
-    
-    
+
+
+
 }

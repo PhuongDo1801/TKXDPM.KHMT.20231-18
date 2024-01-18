@@ -15,7 +15,7 @@ import java.util.List;
 
 public class User {
     protected Statement stm;
-    
+
     private int id;
     private String name;
     private String email;
@@ -135,5 +135,5 @@ public class User {
         }
         return false;
     }
-    
+
 }

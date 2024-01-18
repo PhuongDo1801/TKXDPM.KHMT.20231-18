@@ -19,6 +19,7 @@ import utils.Configs;
 import utils.Utils;
 import views.screen.BaseScreenHandler;
 import views.screen.cart.CartScreenHandler;
+import views.screen.home.MediaHandler;
 import views.screen.popup.PopupScreen;
 import views.screen.shipping.ShippingScreenHandler;
 
@@ -68,6 +69,9 @@ public class ManageProductScreenHandler extends BaseScreenHandler implements Ini
 
     @FXML
     protected Button deleteSelectBtn;
+
+    @FXML
+    private TextField textSearch;
     private ProductController productController;
 
 //    public static List<Integer> selectedCheckboxIds = new ArrayList<>();
@@ -117,6 +121,12 @@ public class ManageProductScreenHandler extends BaseScreenHandler implements Ini
         File file1 = new File(Configs.IMAGE_PATH + "/" + "back.png");
         Image img1 = new Image(file1.toURI().toString());
         aimsImage.setImage(img1);
+
+        textSearch.setOnKeyPressed(event -> {
+            if (event.getCode() == javafx.scene.input.KeyCode.ENTER) {
+                handleSearchEvent();
+            }
+        });
 
 
         aimsImage.setOnMouseClicked(e -> {
@@ -272,6 +282,22 @@ public class ManageProductScreenHandler extends BaseScreenHandler implements Ini
             addMediaHome(filteredItems);
         });
         menuButton.getItems().add(position, menuItem);
+    }
+
+    private void handleSearchEvent() {
+        String keyword = textSearch.getText();
+        performSearch(keyword);
+    }
+
+    private void performSearch(String keyword) {
+        List filteredItems = new ArrayList<>();
+        homeItems.forEach(item -> {
+            ManageProductHandler media = (ManageProductHandler) item;
+            if (media.getMedia().getTitle().toLowerCase().contains(keyword.toLowerCase())) {
+                filteredItems.add(media);
+            }
+        });
+        addMediaHome(filteredItems);
     }
 
 

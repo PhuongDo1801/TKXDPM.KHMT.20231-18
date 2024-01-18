@@ -45,20 +45,24 @@ public class MyOrder extends BaseScreenHandler implements Initializable {
 
     private static Logger LOGGER = Utils.getLogger(MyOrder.class.getName());
 
-//    @FXML
-//    private TableView<Order> tableView;
-//    @FXML
-//    private TableColumn<Order, Integer> idCol;
-//    @FXML
-//    private TableColumn<Order, String> nameCol;
-//    @FXML
-//    private TableColumn<Order, Integer> quantityCol;
-//    @FXML
-//    private TableColumn<Order, Integer> priceCol;
-//    @FXML
-//    private TableColumn<Order, Integer> shippingFeeCol;
-//    @FXML
-//    private TableColumn<Order, String> statusCol;
+    @FXML
+    private TableView<Order> tableView;
+    @FXML
+    private TableColumn<Order, Integer> idCol;
+    @FXML
+    private TableColumn<Order, String> nameCol;
+    @FXML
+    private TableColumn<Order, Integer> quantityCol;
+    @FXML
+    private TableColumn<Order, Integer> priceCol;
+    @FXML
+    private TableColumn<Order, Integer> shippingFeeCol;
+    @FXML
+    private TableColumn<Order, String> statusCol;
+    @FXML
+    private TableColumn<Order, String> phoneCol;
+    @FXML
+    private TableColumn<Order, String> emailCol;
 
     private MyOrderController myOrderController;
 
@@ -69,30 +73,29 @@ public class MyOrder extends BaseScreenHandler implements Initializable {
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         this.myOrderController = new MyOrderController();
-//                try {
-//            List<Order> listUser = myOrderController.getAllOrder();
-//            for (Order user : listUser) {
-//                System.out.println("UserID: " + user.toString());
-//            }
-//        } catch (Exception e) {
-//            // Xử lý ngoại lệ nếu có
-//            e.printStackTrace(); // In thông báo lỗi ra console
-//        } finally {
-//            // Có thể bỏ qua phần này nếu không cần
-//        }
-//
-//        ObservableList<Order> orders = FXCollections.observableArrayList();
-//
-//        orders.addAll(myOrderController.getAllOrder());
-//
-//        tableView.setItems(orders);
-//
-//        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-//        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-//        quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-//        priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
-//        shippingFeeCol.setCellValueFactory(new PropertyValueFactory<>("shippingFees"));
-//        statusCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        try {
+            List<Order> listOrder = myOrderController.getAllOrder();
+            for (Order order : listOrder) {
+                System.out.println("Order: " + order.toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        ObservableList<Order> orders = FXCollections.observableArrayList();
+
+        orders.addAll(myOrderController.getAllOrder());
+
+        tableView.setItems(orders);
+
+        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+        shippingFeeCol.setCellValueFactory(new PropertyValueFactory<>("shippingFees"));
+        phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
+        emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
     }
 
 }
